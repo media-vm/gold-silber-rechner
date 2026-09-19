@@ -36,7 +36,13 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 
 ## Screenshots
 
-Screenshots der Anwendung werden dem Repository noch hinzugefügt.
+### Linux
+
+![Gold- und Silberrechner unter Linux](images/screenshot-linux.png)
+
+### Windows
+
+![Gold- und Silberrechner unter Windows](images/screenshot-windows.png)
 
 ## Quellcode
 
