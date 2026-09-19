@@ -1,0 +1,53 @@
+name: Windows Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "gold-silver-value-calculator-german-v2.0.py"
+      - "Gold-Silber-Rechner.spec"
+      - "gold-silber-icon.ico"
+      - "version-info.txt"
+      - "requirements.txt"
+      - ".github/workflows/windows-build.yml"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python installieren
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Python-Version anzeigen
+        run: python --version
+
+      - name: Abhängigkeiten installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Windows-EXE mit PyInstaller erstellen
+        run: pyinstaller --clean --noconfirm Gold-Silber-Rechner.spec
+
+      - name: Build-Verzeichnis anzeigen
+        shell: powershell
+        run: |
+          Write-Host "Inhalt von dist:"
+          Get-ChildItem -Recurse dist
+
+      - name: Windows-EXE als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gold-Silber-Rechner-Windows
+          path: dist/Gold-Silber-Rechner.exe
+          if-no-files-found: error
