@@ -31,6 +31,7 @@ MANIFEST
 #   before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+!Gold-Silber-Rechner.spec
 
 # Installer logs
 pip-log.txt
@@ -216,3 +217,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-specific secrets and local files
+gold_silber_rechner.json
+*.jks
+*.keystore
+local.properties
+*.pfx
+*.p12
+*.key
+*.pem
+
+# Backup files
+*~
+*.bak
+*.backup
