@@ -1,0 +1,41 @@
+name: Build ARM64 Snap
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-arm64-snap:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show architecture
+        run: |
+          echo "Kernel architecture:"
+          uname -m
+          echo "Debian architecture:"
+          dpkg --print-architecture
+
+      - name: Install Snapcraft
+        run: |
+          sudo snap install snapcraft --classic
+
+      - name: Show Snapcraft version
+        run: |
+          snapcraft --version
+
+      - name: Build ARM64 Snap
+        run: |
+          snapcraft pack --destructive-mode
+
+      - name: Show generated files
+        run: |
+          ls -lh *.snap
+
+      - name: Upload ARM64 Snap as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gold-silber-rechner-arm64
+          path: "*.snap"

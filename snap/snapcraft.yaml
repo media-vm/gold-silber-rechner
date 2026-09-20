@@ -1,0 +1,76 @@
+name: gold-silber-rechner
+title: Gold- und Silberrechner
+version: '2.0'
+summary: Berechnet den Materialwert von Gold und Silber
+description: |
+  Der Gold- und Silberrechner berechnet den theoretischen Materialwert
+  von Gold- und Silbergegenständen anhand von Gewicht, Feinheit und
+  aktuellem Edelmetallkurs.
+
+  Die aktuellen Gold- und Silberkurse werden automatisch über den
+  Linuga-Kursserver abgerufen.
+
+  Unterstützt werden verschiedene Feinheiten für Gold und Silber.
+  Zusätzlich werden Feingewicht und Feinunzen berechnet.
+
+  Sammlerwert, Verarbeitungskosten und Händlerabschläge sind nicht
+  Bestandteil der Berechnung.
+
+website: https://linuga.org/gsr/
+contact: mailto:gsr@linuga.org
+icon: snap/gui/icon.png
+license: MIT
+
+grade: stable
+confinement: strict
+base: core24
+
+apps:
+  gold-silber-rechner:
+    command: bin/start-gold-silber-rechner
+    desktop: meta/gui/gold-silber-rechner.desktop
+    environment:
+      PYTHONPATH: "$SNAP/usr/lib/python3.12:$SNAP/usr/lib/python3.12/lib-dynload:$SNAP/usr/lib/python3/dist-packages"
+      TCL_LIBRARY: "$SNAP/usr/share/tcltk/tcl8.6"
+      TK_LIBRARY: "$SNAP/usr/share/tcltk/tk8.6"
+    plugs:
+      - network
+      - desktop
+      - desktop-legacy
+      - x11
+
+parts:
+  gold-silber-rechner:
+    plugin: dump
+    source: .
+    stage-packages:
+      - python3
+      - python3-tk
+      - python3-requests
+      - tcl8.6
+      - tk8.6
+      - ca-certificates
+      - tzdata
+
+    organize:
+      gold-silver-value-calculator-german-v2.0.py: usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.0.py
+      gold-silber-icon.png: usr/share/gold-silber-rechner/gold-silber-icon.png
+
+    override-build: |
+      craftctl default
+
+      mkdir -p "$CRAFT_PART_INSTALL/bin"
+      mkdir -p "$CRAFT_PART_INSTALL/meta/gui"
+
+      cat > "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner" << 'EOF'
+      #!/bin/sh
+      exec python3 \
+        "$SNAP/usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.0.py"
+      EOF
+      chmod +x "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner"
+
+      cp "$CRAFT_PART_SRC/snap/gui/gold-silber-rechner.desktop" \
+         "$CRAFT_PART_INSTALL/meta/gui/gold-silber-rechner.desktop"
+
+      cp "$CRAFT_PART_SRC/gold-silber-icon.png" \
+         "$CRAFT_PART_INSTALL/meta/gui/icon.png"

@@ -232,3 +232,9 @@ local.properties
 *~
 *.bak
 *.backup
+
+# Snapcraft build output
+.craft/
+prime/
+stage/
+*.snap
