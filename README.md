@@ -117,9 +117,9 @@ Free code signing provided by SignPath.io, certificate by SignPath Foundation.
 
 ### Privacy policy
 
-This program does not collect or transmit personal user data.
+See [PRIVACY.md](PRIVACY.md).
 
-The application connects to the project's server at `https://gsr.linuga.org/` only to retrieve the current gold and silver prices required for its intended functionality.
+The application connects to `https://gsr.linuga.org/` to retrieve current gold and silver prices. It does not contain advertising, analytics or user tracking.
 
 ## Lizenz
 
