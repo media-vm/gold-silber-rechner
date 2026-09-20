@@ -104,7 +104,4 @@ Die Desktop-Version wurde in **Python** entwickelt.
 
 Die grafische Benutzeroberfläche verwendet Tkinter.
 
-Die Datei
-
-```text
-gold-silver-value-calculator-german-v2.0.py
+Die Datei `gold-silver-value-calculator-german-v2.0.py` enthält den Quellcode der Desktop-Version 2.0.
