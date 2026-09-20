@@ -8,6 +8,16 @@ Die Anwendung eignet sich zum Beispiel zur Bewertung von Münzen, Barren, Schmuc
 
 Aktuelle Version: **2.0**
 
+## Download
+
+Die aktuelle Windows-Version steht über die GitHub-Releases zur Verfügung:
+
+https://github.com/media-vm/gold-silber-rechner/releases
+
+Weitere Downloads für Linux und Android findest du auf der Projekt-Webseite:
+
+https://linuga.org/gsr/
+
 ## Funktionen
 
 - Berechnung des Materialwerts von Gold und Silber
