@@ -10,11 +10,55 @@ Aktuelle Version: **2.0**
 
 ## Download
 
-Die aktuelle Windows-Version steht über die GitHub-Releases zur Verfügung:
+Die aktuelle Version 2.0 steht über die GitHub-Releases zur Verfügung:
 
 https://github.com/media-vm/gold-silber-rechner/releases
 
-Weitere Downloads für Linux und Android findest du auf der Projekt-Webseite:
+### Windows
+
+Für Windows steht eine ausführbare EXE-Datei bereit:
+
+`Gold-Silber-Rechner-2.0.exe`
+
+Die Anwendung kann direkt gestartet werden.
+
+### Debian / Ubuntu
+
+Für Debian-basierte Linux-Systeme steht ein DEB-Paket zur Verfügung:
+
+`gold-silber-rechner_2.0-1_all.deb`
+
+Installation:
+
+```bash
+sudo apt install ./gold-silber-rechner_2.0-1_all.deb
+```
+
+### Snap
+
+Für Linux steht außerdem ein Snap-Paket zur Verfügung:
+
+`gold-silber-rechner_2.0_amd64.snap`
+
+Lokale Installation:
+
+```bash
+sudo snap install --dangerous ./gold-silber-rechner_2.0_amd64.snap
+```
+
+Die Anwendung ist außerdem über den Snap Store erhältlich.
+
+### Android
+
+Für Android steht eine APK-Datei zur Verfügung:
+
+`gold-silber-rechner-2.0.apk`
+
+Bei direkter Installation der APK kann Android eine Bestätigung für die Installation aus einer externen Quelle verlangen.
+
+### Projekt-Webseite
+
+Weitere Informationen und Downloads:
 
 https://linuga.org/gsr/
 
