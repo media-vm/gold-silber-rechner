@@ -103,5 +103,26 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 Die Desktop-Version wurde in **Python** entwickelt.
 
 Die grafische Benutzeroberfläche verwendet Tkinter.
-
 Die Datei `gold-silver-value-calculator-german-v2.0.py` enthält den Quellcode der Desktop-Version 2.0.
+
+## Code signing policy
+
+Free code signing provided by SignPath.io, certificate by SignPath Foundation.
+
+### Project roles
+
+- Author / Committer: Volker Andreas Müller
+- Reviewer: Volker Andreas Müller
+- Approver: Volker Andreas Müller
+
+### Privacy policy
+
+This program does not collect or transmit personal user data.
+
+The application connects to the project's server at `https://gsr.linuga.org/` only to retrieve the current gold and silver prices required for its intended functionality.
+
+## Lizenz
+
+Dieses Projekt steht unter der MIT License.
+
+Siehe die Datei `LICENSE` im Repository.
