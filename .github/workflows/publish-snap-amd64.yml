@@ -57,6 +57,8 @@ jobs:
           compile(app.read_bytes(), str(app), 'exec')
           assert (root / 'usr/share/gold-silber-rechner/gold-silber-icon.png').is_file()
           assert (root / 'bin/start-gold-silber-rechner').is_file()
+          desktop = (root / 'meta/gui/gold-silber-rechner.desktop').read_text()
+          assert 'StartupNotify=false' in desktop
           PY
           sha256sum "$package"
-          gh release upload v2.2 "$package"
+          gh release upload v2.2 "$package" --clobber
