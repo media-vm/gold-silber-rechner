@@ -1,0 +1,41 @@
+name: Publish Snap 2.2 to Snap Store
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: snap-store-stable
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check Snap Store credentials
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        run: |
+          if [ -z "$SNAPCRAFT_STORE_CREDENTIALS" ]; then
+            echo '::error::Missing repository secret SNAPCRAFT_STORE_CREDENTIALS. Add Snapcraft export-login credentials scoped to gold-silber-rechner with package_push and package_release permissions.'
+            exit 1
+          fi
+      - name: Download verified release package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release download v2.2 --pattern gold-silber-rechner_2.2_amd64.snap
+          echo 'bec2486b06c47eb1a79243e6611dabf61693ae1041f92aaf7a53793549efc504  gold-silber-rechner_2.2_amd64.snap' | sha256sum --check
+      - name: Install Snapcraft
+        run: sudo snap install snapcraft --classic
+      - name: Upload and release to stable
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        run: snapcraft upload gold-silber-rechner_2.2_amd64.snap --release=stable
+      - name: Check store channels
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        run: snapcraft status gold-silber-rechner
