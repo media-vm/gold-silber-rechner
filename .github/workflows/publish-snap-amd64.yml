@@ -47,7 +47,7 @@ jobs:
           package=snap-output/gold-silber-rechner_2.2_amd64.snap
           unsquashfs -d "$RUNNER_TEMP/snap-check" "$package"
           /usr/bin/python3 - "$RUNNER_TEMP/snap-check" <<'PY'
-          import pathlib, sys
+          import pathlib, sys, hashlib
           import yaml
           root = pathlib.Path(sys.argv[1])
           metadata = yaml.safe_load((root / 'meta/snap.yaml').read_text())
@@ -55,6 +55,7 @@ jobs:
           assert metadata['architectures'] == ['amd64']
           app = root / 'usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py'
           compile(app.read_bytes(), str(app), 'exec')
+          assert hashlib.sha256(app.read_bytes()).hexdigest() == '5d1a0c1edc6f1f02b8a1fc4bf42fe758f61c65396dedf4a6e9d8e2e9633aa7ee'
           assert (root / 'usr/share/gold-silber-rechner/gold-silber-icon.png').is_file()
           assert (root / 'bin/start-gold-silber-rechner').is_file()
           desktop = (root / 'meta/gui/gold-silber-rechner.desktop').read_text()

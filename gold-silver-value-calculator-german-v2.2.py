@@ -340,6 +340,63 @@ def schliessen():
     fenster.destroy()
 
 
+def startbenachrichtigung_beenden():
+    """Beendet unter X11 auch eine vom Starter geerbte Startbenachrichtigung."""
+    if not sys.platform.startswith("linux") or not os.environ.get("DESKTOP_STARTUP_ID"):
+        return
+
+    import ctypes
+    from ctypes.util import find_library
+
+    xdisplay = display = context = None
+    try:
+        x11_name = find_library("X11")
+        sn_name = find_library("startup-notification-1")
+        if not x11_name or not sn_name:
+            return
+        x11 = ctypes.CDLL(x11_name)
+        sn = ctypes.CDLL(sn_name)
+        pointer = ctypes.c_void_p
+        x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+        x11.XOpenDisplay.restype = pointer
+        x11.XDefaultScreen.argtypes = [pointer]
+        x11.XDefaultScreen.restype = ctypes.c_int
+        x11.XCloseDisplay.argtypes = [pointer]
+        x11.XCloseDisplay.restype = ctypes.c_int
+        sn.sn_display_new.argtypes = [pointer, pointer, pointer]
+        sn.sn_display_new.restype = pointer
+        sn.sn_display_unref.argtypes = [pointer]
+        sn.sn_display_unref.restype = None
+        sn.sn_launchee_context_new_from_environment.argtypes = [pointer, ctypes.c_int]
+        sn.sn_launchee_context_new_from_environment.restype = pointer
+        sn.sn_launchee_context_complete.argtypes = [pointer]
+        sn.sn_launchee_context_complete.restype = None
+        sn.sn_launchee_context_unref.argtypes = [pointer]
+        sn.sn_launchee_context_unref.restype = None
+        xdisplay = x11.XOpenDisplay(None)
+        if not xdisplay:
+            return
+        display = sn.sn_display_new(xdisplay, None, None)
+        if not display:
+            return
+        context = sn.sn_launchee_context_new_from_environment(
+            display, x11.XDefaultScreen(xdisplay)
+        )
+        if context:
+            sn.sn_launchee_context_complete(context)
+            os.environ.pop("DESKTOP_STARTUP_ID", None)
+    except (OSError, AttributeError):
+        # Ein fehlender Desktop-Dienst darf den Programmstart nicht verhindern.
+        pass
+    finally:
+        if context:
+            sn.sn_launchee_context_unref(context)
+        if display:
+            sn.sn_display_unref(display)
+        if xdisplay:
+            x11.XCloseDisplay(xdisplay)
+
+
 def main():
     global fenster, metall_variable, feinheit_variable
     global ergebnis_variable, status_variable, kursstand_variable
@@ -512,6 +569,7 @@ def main():
     fenster.after(100, automatischen_kursabruf_planen)
     fenster.protocol("WM_DELETE_WINDOW", schliessen)
     fenster.after(50, kursantworten_verarbeiten)
+    fenster.after_idle(startbenachrichtigung_beenden)
     fenster.mainloop()
 
 

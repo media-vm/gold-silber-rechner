@@ -14,15 +14,15 @@ Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Versio
 
 ### Debian / Ubuntu – Version 2.2
 
-[DEB-Paket Version 2.2 herunterladen](https://github.com/media-vm/gold-silber-rechner/raw/refs/heads/main/downloads/gold-silber-rechner_2.2-1_all.deb)
+[DEB-Paket Version 2.2 herunterladen](https://github.com/media-vm/gold-silber-rechner/raw/refs/heads/main/downloads/gold-silber-rechner_2.2-2_all.deb)
 
 ```bash
-sudo apt install ./gold-silber-rechner_2.2-1_all.deb
+sudo apt install ./gold-silber-rechner_2.2-2_all.deb
 ```
 
 Das Paket liegt direkt im Repository unter `downloads/`. Ein GitHub-Release für Version 2.2 wurde noch nicht veröffentlicht.
 
-SHA-256: `da8e70a8f9b900c3e3a962b0b06b6ec2672198738e4eadbf589b65f289afb796`
+SHA-256: `7caa067547404ada99050d9e51013c7f322f149675cdb60d7675f3ba5d88b1c1`
 
 ### Frühere Installationspakete (Version 2.0)
 
@@ -149,3 +149,13 @@ The application connects to `https://gsr.linuga.org/` to retrieve current gold a
 Dieses Projekt steht unter der MIT License.
 
 Siehe die Datei `LICENSE` im Repository.
+
+## Paketbau
+
+DEB reproduzierbar aus dem aktuellen Quellstand bauen:
+
+```bash
+python3 packaging/build-deb.py
+```
+
+Das Paket liegt anschließend unter `dist/`. Snap und DEB verwenden dieselbe Python-Datei der Version 2.2. Die DEB-Paketrevision 2.2-2 enthält zusätzlich zur deaktivierten Desktop-Startbenachrichtigung die Bereinigung geerbter X11-Startbenachrichtigungen im Python-Programm.

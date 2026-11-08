@@ -45,6 +45,7 @@ parts:
     source: .
     stage-packages:
       - python3
+      - libstartup-notification0
       - python3-tk
       - python3-requests
       - tcl8.6
