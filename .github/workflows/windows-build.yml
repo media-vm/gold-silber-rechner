@@ -17,6 +17,13 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONUTF8: '1'
+
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-windows:
     runs-on: windows-2022
@@ -84,7 +91,8 @@ jobs:
               Start-Sleep -Seconds 1
               $process.Refresh()
               if ($process.HasExited) { throw "Executable exited prematurely: $($process.ExitCode)" }
-              if ($process.MainWindowTitle -eq 'Gold- und Silberrechner') { $ready = $true; break }
+              $window = Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe -and $_.MainWindowTitle -eq 'Gold- und Silberrechner' }
+              if ($window) { $ready = $true; break }
             }
             if (-not $ready) { throw 'Expected application window was not found' }
             if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.2') {
@@ -92,7 +100,7 @@ jobs:
             }
             Write-Output 'PASS: packaged application window and version metadata'
           } finally {
-            if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
+            Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
           }
       - name: Name executable and calculate checksum
         shell: pwsh
