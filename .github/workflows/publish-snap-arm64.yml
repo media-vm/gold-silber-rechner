@@ -1,0 +1,65 @@
+name: Publish ARM64 Snap
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Successful Build ARM64 Snap run ID
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Verify selected build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN_ID" > "$RUNNER_TEMP/build.json"
+          python3 - "$RUNNER_TEMP/build.json" <<'PY'
+          import json, sys
+          run = json.load(open(sys.argv[1]))
+          assert run['conclusion'] == 'success', 'Build must have succeeded'
+          assert run['path'] == '.github/workflows/snap-arm64.yml', 'Unexpected build workflow'
+          assert run['head_branch'] == 'main', 'Build must use main'
+          PY
+      - name: Download built Snap
+        uses: actions/download-artifact@v4
+        with:
+          name: gold-silber-rechner-2.2-arm64
+          path: snap-output
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+      - name: Inspect package and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools python3-yaml
+          package=snap-output/gold-silber-rechner_2.2_arm64.snap
+          unsquashfs -d "$RUNNER_TEMP/snap-check" "$package"
+          /usr/bin/python3 - "$RUNNER_TEMP/snap-check" <<'PY'
+          import pathlib, sys, hashlib
+          import yaml
+          root = pathlib.Path(sys.argv[1])
+          metadata = yaml.safe_load((root / 'meta/snap.yaml').read_text())
+          assert str(metadata['version']) == '2.2'
+          assert metadata['architectures'] == ['arm64']
+          app = root / 'usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py'
+          compile(app.read_bytes(), str(app), 'exec')
+          assert hashlib.sha256(app.read_bytes()).hexdigest() == '5d1a0c1edc6f1f02b8a1fc4bf42fe758f61c65396dedf4a6e9d8e2e9633aa7ee'
+          assert (root / 'usr/share/gold-silber-rechner/gold-silber-icon.png').is_file()
+          assert (root / 'bin/start-gold-silber-rechner').is_file()
+          desktop = (root / 'meta/gui/gold-silber-rechner.desktop').read_text()
+          assert 'StartupNotify=false' in desktop
+          PY
+          sha256sum "$package"
+          gh release upload v2.2 "$package" --clobber
