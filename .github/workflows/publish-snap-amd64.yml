@@ -43,10 +43,10 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools
+          sudo apt-get install -y squashfs-tools python3-yaml
           package=snap-output/gold-silber-rechner_2.2_amd64.snap
           unsquashfs -d "$RUNNER_TEMP/snap-check" "$package"
-          python3 - "$RUNNER_TEMP/snap-check" <<'PY'
+          /usr/bin/python3 - "$RUNNER_TEMP/snap-check" <<'PY'
           import pathlib, sys
           import yaml
           root = pathlib.Path(sys.argv[1])
