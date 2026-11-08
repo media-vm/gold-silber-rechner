@@ -12,65 +12,51 @@ Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Versio
 
 ## Download
 
-### Debian / Ubuntu – Version 2.2
+Aktuelle Desktop-Pakete: [GitHub-Release v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2).
 
-[DEB-Paket Version 2.2 herunterladen](https://github.com/media-vm/gold-silber-rechner/raw/refs/heads/main/downloads/gold-silber-rechner_2.2-2_all.deb)
+### Windows 11 – Version 2.2 (64 Bit)
+
+[Gold-Silber-Rechner-2.2.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2.exe)
+
+Die Anwendung kann direkt gestartet werden; Python muss nicht separat installiert werden.
+
+### Windows 7 – Version 2.2 (32 Bit, Kompatibilitätsbuild)
+
+[Gold-Silber-Rechner-2.2-Windows7.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2-Windows7.exe)
+
+Dieser Build verwendet denselben Anwendungscode mit Python 3.8.10, PyInstaller 5.13.2 und einem Zoneinfo-Backport. Berechnung, Zeitzonendaten und Start der EXE wurden auf einem aktuellen Windows-CI-Runner geprüft. Ein Funktionstest auf einem echten Windows-7-Rechner steht noch aus. Die älteren Laufzeitbibliotheken sind für diesen Kompatibilitätsbuild erforderlich.
+
+### Debian / Ubuntu – Version 2.2, Paketrevision 2.2-2
+
+[DEB-Paket herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2-2_all.deb)
 
 ```bash
 sudo apt install ./gold-silber-rechner_2.2-2_all.deb
 ```
 
-Das Paket liegt direkt im Repository unter `downloads/`. Ein GitHub-Release für Version 2.2 wurde noch nicht veröffentlicht.
+Das Paket liegt zusätzlich im Repository unter `downloads/`.
 
 SHA-256: `7caa067547404ada99050d9e51013c7f322f149675cdb60d7675f3ba5d88b1c1`
 
-### Frühere Installationspakete (Version 2.0)
+### Snap – Version 2.2 (amd64)
 
-Die bisherigen Installationspakete der Version 2.0 stehen über die GitHub-Releases zur Verfügung. Das DEB-Paket für Version 2.2 ist oben direkt verlinkt:
-
-https://github.com/media-vm/gold-silber-rechner/releases
-
-### Windows
-
-Für Windows steht eine ausführbare EXE-Datei bereit:
-
-`Gold-Silber-Rechner-2.0.exe`
-
-Die Anwendung kann direkt gestartet werden.
-
-### Debian / Ubuntu
-
-Für Debian-basierte Linux-Systeme steht ein DEB-Paket zur Verfügung:
-
-`gold-silber-rechner_2.0-1_all.deb`
-
-Installation:
+Im Snap Store im Kanal `latest/stable` verfügbar (Revision 6 oder neuer). Bestehende Installation aktualisieren:
 
 ```bash
-sudo apt install ./gold-silber-rechner_2.0-1_all.deb
+sudo snap refresh gold-silber-rechner
 ```
 
-### Snap
+[Snap-Paket für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_amd64.snap)
 
-Für Linux steht außerdem ein Snap-Paket zur Verfügung:
+### Android – weiterhin Version 2.0
 
-`gold-silber-rechner_2.0_amd64.snap`
+Die Android-APK wurde noch nicht auf Version 2.2 aktualisiert. Der Android-Quellcode und ein Android-Build sind in diesem Repository nicht enthalten.
 
-Lokale Installation:
+[Bisherige Android-APK aus Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.0/gold-silver-calculator-v2.apk)
 
-```bash
-sudo snap install --dangerous ./gold-silber-rechner_2.0_amd64.snap
-```
+### Weitere Paketvarianten und Archiv
 
-Die Anwendung ist außerdem über den Snap Store erhältlich.
-
-### Android
-
-Für Android steht eine APK-Datei zur Verfügung:
-
-`gold-silber-rechner-2.0.apk`
-
-Bei direkter Installation der APK kann Android eine Bestätigung für die Installation aus einer externen Quelle verlangen.
+Ein ARM64-Snap und ein MSIX-Paket wurden im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Der ARM64-Build-Workflow ist vorhanden. Die historische Python-Datei für Version 2.0 und [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) bleiben als Archiv erhalten.
 
 ### Projekt-Webseite
 
@@ -159,3 +145,5 @@ python3 packaging/build-deb.py
 ```
 
 Das Paket liegt anschließend unter `dist/`. Snap und DEB verwenden dieselbe Python-Datei der Version 2.2. Die DEB-Paketrevision 2.2-2 enthält zusätzlich zur deaktivierten Desktop-Startbenachrichtigung die Bereinigung geerbter X11-Startbenachrichtigungen im Python-Programm.
+
+Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. `Publish Windows 2.2 executables` veröffentlicht beide geprüften Artefakte eines erfolgreichen Builds. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.
