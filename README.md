@@ -38,15 +38,19 @@ Das Paket liegt zusätzlich im Repository unter `downloads/`.
 
 SHA-256: `7caa067547404ada99050d9e51013c7f322f149675cdb60d7675f3ba5d88b1c1`
 
-### Snap – Version 2.2 (amd64)
+### Snap – Version 2.2 (amd64 und ARM64)
 
-Im Snap Store im Kanal `latest/stable` verfügbar (Revision 6 oder neuer). Bestehende Installation aktualisieren:
+Im Snap Store im Kanal `latest/stable` verfügbar: amd64 ab Revision 6, ARM64 ab Revision 7. Bestehende Installation aktualisieren:
 
 ```bash
 sudo snap refresh gold-silber-rechner
 ```
 
-[Snap-Paket für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_amd64.snap)
+[amd64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_amd64.snap)
+
+[ARM64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_arm64.snap)
+
+Der ARM64-Snap enthält denselben Python-Quellstand. Paketinhalt, Quellcode-Prüfsumme und GUI-Start mit Beispielrechnung wurden auf einem nativen ARM64-Runner geprüft. Die öffentliche Store-Abfrage bestätigt Version 2.2, Revision 7 für ARM64.
 
 ### Android – weiterhin Version 2.0
 
@@ -56,7 +60,7 @@ Die Android-APK wurde noch nicht auf Version 2.2 aktualisiert. Der Android-Quell
 
 ### Weitere Paketvarianten und Archiv
 
-Ein ARM64-Snap und ein MSIX-Paket wurden im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Der ARM64-Build-Workflow ist vorhanden. Die historische Python-Datei für Version 2.0 und [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) bleiben als Archiv erhalten.
+Ein MSIX-Paket wurde im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Für ARM64 sind Build- und Veröffentlichungsworkflows vorhanden. Die historische Python-Datei für Version 2.0 und [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) bleiben als Archiv erhalten.
 
 ### Projekt-Webseite
 
