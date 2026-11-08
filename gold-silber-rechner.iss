@@ -1,5 +1,5 @@
 #define MyAppName "Gold- und Silberrechner"
-#define MyAppVersion "1.0"
+#define MyAppVersion "2.2"
 #define MyAppPublisher "Volker Müller"
 #define MyAppExeName "Gold-Silber-Rechner.exe"
 
@@ -13,7 +13,7 @@ DefaultDirName={autopf}\Gold-Silber-Rechner
 DefaultGroupName=Gold- und Silberrechner
 
 OutputDir=installer
-OutputBaseFilename=Gold-Silber-Rechner-Setup-1.0
+OutputBaseFilename=Gold-Silber-Rechner-Setup-2.2
 
 SetupIconFile=gold-silber-icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}

@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "gold-silver-value-calculator-german-v2.0.py"
+      - "gold-silver-value-calculator-german-v2.2.py"
       - "Gold-Silber-Rechner.spec"
       - "gold-silber-icon.ico"
       - "version-info.txt"

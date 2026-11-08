@@ -1,7 +1,7 @@
 VSVersionInfo(
   ffi=FixedFileInfo(
-    filevers=(1, 0, 0, 0),
-    prodvers=(1, 0, 0, 0),
+    filevers=(2, 2, 0, 0),
+    prodvers=(2, 2, 0, 0),
     mask=0x3f,
     flags=0x0,
     OS=0x40004,
@@ -17,12 +17,12 @@ VSVersionInfo(
           [
             StringStruct('CompanyName', 'Volker Müller'),
             StringStruct('FileDescription', 'Gold- und Silberrechner'),
-            StringStruct('FileVersion', '1.0'),
+            StringStruct('FileVersion', '2.2'),
             StringStruct('InternalName', 'Gold-Silber-Rechner'),
             StringStruct('LegalCopyright', '© 2026 Volker Müller'),
             StringStruct('OriginalFilename', 'Gold-Silber-Rechner.exe'),
             StringStruct('ProductName', 'Gold- und Silberrechner'),
-            StringStruct('ProductVersion', '1.0')
+            StringStruct('ProductVersion', '2.2')
           ]
         )
       ]

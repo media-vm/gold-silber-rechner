@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['gold-silver-value-calculator-german-v2.0.py'],
+    ['gold-silver-value-calculator-german-v2.2.py'],
     pathex=[],
     binaries=[],
     datas=[],

@@ -1,6 +1,6 @@
 name: gold-silber-rechner
 title: Gold- und Silberrechner
-version: '2.0'
+version: '2.2'
 summary: Berechnet den Materialwert von Gold und Silber
 description: |
   Der Gold- und Silberrechner berechnet den theoretischen Materialwert
@@ -53,7 +53,7 @@ parts:
       - tzdata
 
     organize:
-      gold-silver-value-calculator-german-v2.0.py: usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.0.py
+      gold-silver-value-calculator-german-v2.2.py: usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py
       gold-silber-icon.png: usr/share/gold-silber-rechner/gold-silber-icon.png
 
     override-build: |
@@ -65,7 +65,7 @@ parts:
       cat > "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner" << 'EOF'
       #!/bin/sh
       exec python3 \
-        "$SNAP/usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.0.py"
+        "$SNAP/usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py"
       EOF
       chmod +x "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner"
 

@@ -6,11 +6,13 @@ Die Anwendung eignet sich zum Beispiel zur Bewertung von Münzen, Barren, Schmuc
 
 ## Version
 
-Aktuelle Version: **2.0**
+Aktuelle Quellcode-Version: **2.2**
+
+Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Version erhalten.
 
 ## Download
 
-Die aktuelle Version 2.0 steht über die GitHub-Releases zur Verfügung:
+Die bisherigen Installationspakete der Version 2.0 stehen über die GitHub-Releases zur Verfügung. Neue Pakete für Version 2.2 sind damit noch nicht veröffentlicht:
 
 https://github.com/media-vm/gold-silber-rechner/releases
 
@@ -103,7 +105,14 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 Die Desktop-Version wurde in **Python** entwickelt.
 
 Die grafische Benutzeroberfläche verwendet Tkinter.
-Die Datei `gold-silver-value-calculator-german-v2.0.py` enthält den Quellcode der Desktop-Version 2.0.
+Die Datei `gold-silver-value-calculator-german-v2.2.py` enthält den aktuellen Quellcode der Desktop-Version 2.2.
+
+Start aus dem Repository mit installiertem Python und Tkinter:
+
+```bash
+python -m pip install -r requirements.txt
+python gold-silver-value-calculator-german-v2.2.py
+```
 
 ## Code signing policy
 
