@@ -3,51 +3,104 @@ name: Windows Build
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - "gold-silver-value-calculator-german-v2.2.py"
-      - "Gold-Silber-Rechner.spec"
-      - "gold-silber-icon.ico"
-      - "version-info.txt"
-      - "requirements.txt"
-      - ".github/workflows/windows-build.yml"
+      - gold-silver-value-calculator-german-v2.2.py
+      - Gold-Silber-Rechner.spec
+      - gold-silber-icon.ico
+      - version-info.txt
+      - requirements.txt
+      - packaging/windows7-runtime-hook.py
+      - packaging/requirements-windows7.txt
+      - .github/workflows/windows-build.yml
+
+permissions:
+  contents: read
 
 jobs:
   build-windows:
-    runs-on: windows-latest
-
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: Windows11
+            python: '3.13'
+            architecture: x64
+            filename: Gold-Silber-Rechner-2.2.exe
+          - target: Windows7
+            python: '3.8.10'
+            architecture: x86
+            filename: Gold-Silber-Rechner-2.2-Windows7.exe
     steps:
-      - name: Repository auschecken
-        uses: actions/checkout@v4
-
-      - name: Python installieren
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
-          cache: "pip"
-
-      - name: Python-Version anzeigen
-        run: python --version
-
-      - name: Abhängigkeiten installieren
+          python-version: ${{ matrix.python }}
+          architecture: ${{ matrix.architecture }}
+      - name: Install dependencies
+        shell: pwsh
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller==6.22.2
-
-      - name: Windows-EXE mit PyInstaller erstellen
-        run: pyinstaller --clean --noconfirm Gold-Silber-Rechner.spec
-
-      - name: Build-Verzeichnis anzeigen
-        shell: powershell
+          if ('${{ matrix.target }}' -eq 'Windows7') {
+            python -m pip install -r packaging/requirements-windows7.txt
+          } else {
+            python -m pip install -r requirements.txt pyinstaller==6.22.2
+          }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip check
+      - name: Verify application calculation and time zone data
+        shell: pwsh
         run: |
-          Write-Host "Inhalt von dist:"
-          Get-ChildItem -Recurse dist
-
-      - name: Windows-EXE als Artefakt hochladen
-        uses: actions/upload-artifact@v4
+          @'
+          import runpy, sys
+          if sys.version_info < (3, 9):
+              runpy.run_path('packaging/windows7-runtime-hook.py')
+          from decimal import Decimal
+          app = runpy.run_path('gold-silver-value-calculator-german-v2.2.py')
+          assert app['__version__'] == '2.2'
+          assert app['eingabe_lesen']('1.234,56', 'Test') == Decimal('1234.56')
+          assert app['kursstand_formatieren']('2026-11-08T12:00:00Z') == '08.11.2026, 13:00 Uhr'
+          class Field:
+              def __init__(self, value=''): self.value = value
+              def get(self): return self.value
+              def set(self, value): self.value = value
+          ns = app['berechnen'].__globals__
+          for name, value in dict(unzenpreis_eingabe='31,1034768', gewicht_eingabe='100', feinheit_variable='800', metall_variable='Silber', ergebnis_variable='', status_variable='').items():
+              ns[name] = Field(value)
+          app['berechnen']()
+          assert ns['ergebnis_variable'].get().startswith('80,00 €')
+          print('PASS: calculation, German input and Europe/Berlin time zone')
+          '@ | python -
+      - name: Build executable
+        run: python -m PyInstaller --clean --noconfirm Gold-Silber-Rechner.spec
+      - name: Smoke test executable GUI
+        shell: pwsh
+        run: |
+          $exe = (Resolve-Path 'dist/Gold-Silber-Rechner.exe').Path
+          $process = Start-Process -FilePath $exe -PassThru
+          try {
+            $ready = $false
+            for ($attempt = 0; $attempt -lt 30; $attempt++) {
+              Start-Sleep -Seconds 1
+              $process.Refresh()
+              if ($process.HasExited) { throw "Executable exited prematurely: $($process.ExitCode)" }
+              if ($process.MainWindowTitle -eq 'Gold- und Silberrechner') { $ready = $true; break }
+            }
+            if (-not $ready) { throw 'Expected application window was not found' }
+            if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.2') {
+              throw 'Incorrect embedded version metadata'
+            }
+            Write-Output 'PASS: packaged application window and version metadata'
+          } finally {
+            if (-not $process.HasExited) { Stop-Process -Id $process.Id -Force }
+          }
+      - name: Name executable and calculate checksum
+        shell: pwsh
+        run: |
+          Move-Item dist/Gold-Silber-Rechner.exe 'dist/${{ matrix.filename }}'
+          Get-FileHash 'dist/${{ matrix.filename }}' -Algorithm SHA256
+      - uses: actions/upload-artifact@v4
         with:
-          name: Gold-Silber-Rechner-Windows
-          path: dist/Gold-Silber-Rechner.exe
+          name: Gold-Silber-Rechner-2.2-${{ matrix.target }}
+          path: dist/${{ matrix.filename }}
           if-no-files-found: error

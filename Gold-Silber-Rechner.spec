@@ -1,18 +1,22 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 
+import sys
+from PyInstaller.utils.hooks import collect_data_files
+
+legacy = sys.version_info < (3, 9)
+
 a = Analysis(
     ['gold-silver-value-calculator-german-v2.2.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=collect_data_files('tzdata'),
+    hiddenimports=['backports.zoneinfo'] if legacy else [],
     hookspath=[],
     hooksconfig={},
-    runtime_hooks=[],
+    runtime_hooks=['packaging/windows7-runtime-hook.py'] if legacy else [],
     excludes=[],
     noarchive=False,
-    optimize=0,
 )
 pyz = PYZ(a.pure)
 
@@ -36,4 +40,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=['gold-silber-icon.ico'],
+    version='version-info.txt',
 )
