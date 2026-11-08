@@ -15,7 +15,20 @@ jobs:
       - name: Install Snapcraft
         run: sudo snap install snapcraft --classic
       - name: Build AMD64 Snap
-        run: snapcraft pack --destructive-mode
+        run: |
+          set +e
+          snapcraft pack --destructive-mode > "$RUNNER_TEMP/snapcraft.log" 2>&1
+          result=$?
+          cat "$RUNNER_TEMP/snapcraft.log"
+          if [ "$result" -ne 0 ]; then
+            python3 - "$RUNNER_TEMP/snapcraft.log" <<'PYLOG'
+          import pathlib, sys
+          log = pathlib.Path(sys.argv[1]).read_text()[-12000:]
+          log = log.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::error title=Snapcraft build failure::' + log)
+          PYLOG
+          fi
+          exit "$result"
       - name: Upload AMD64 Snap as artifact
         uses: actions/upload-artifact@v4
         with:
