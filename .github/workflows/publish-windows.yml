@@ -1,0 +1,56 @@
+name: Publish Windows 2.2 executables
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Successful Windows Build run ID
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Verify selected build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN_ID" > "$RUNNER_TEMP/build.json"
+          python3 - "$RUNNER_TEMP/build.json" <<'PY'
+          import json, sys
+          run = json.load(open(sys.argv[1]))
+          assert run['conclusion'] == 'success'
+          assert run['path'] == '.github/workflows/windows-build.yml'
+          assert run['head_branch'] == 'main'
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Gold-Silber-Rechner-2.2-*
+          merge-multiple: true
+          path: executables
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify executable architecture and upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct, hashlib
+          for name, machine in [('Gold-Silber-Rechner-2.2.exe', 0x8664), ('Gold-Silber-Rechner-2.2-Windows7.exe', 0x14c)]:
+              content = (Path('executables') / name).read_bytes()
+              assert content[:2] == b'MZ'
+              offset = struct.unpack_from('<I', content, 0x3c)[0]
+              assert content[offset:offset+4] == b'PE\0\0'
+              assert struct.unpack_from('<H', content, offset+4)[0] == machine
+              print(name, hashlib.sha256(content).hexdigest())
+          PY
+          gh release upload v2.2 executables/Gold-Silber-Rechner-2.2.exe executables/Gold-Silber-Rechner-2.2-Windows7.exe --clobber
