@@ -35,7 +35,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           gh release download v2.2 --pattern gold-silber-rechner_2.2_amd64.snap
-          echo 'bec2486b06c47eb1a79243e6611dabf61693ae1041f92aaf7a53793549efc504  gold-silber-rechner_2.2_amd64.snap' | sha256sum --check
+          echo '9d1986af64313971c6630609d32a7e8fca3effe716153d6caff991472706e99d  gold-silber-rechner_2.2_amd64.snap' | sha256sum --check
       - name: Install Snapcraft
         if: ${{ !inputs.verify_only }}
         run: sudo snap install snapcraft --classic
