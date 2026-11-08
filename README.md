@@ -12,7 +12,21 @@ Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Versio
 
 ## Download
 
-Die bisherigen Installationspakete der Version 2.0 stehen über die GitHub-Releases zur Verfügung. Neue Pakete für Version 2.2 sind damit noch nicht veröffentlicht:
+### Debian / Ubuntu – Version 2.2
+
+[DEB-Paket Version 2.2 herunterladen](https://github.com/media-vm/gold-silber-rechner/raw/refs/heads/main/downloads/gold-silber-rechner_2.2-1_all.deb)
+
+```bash
+sudo apt install ./gold-silber-rechner_2.2-1_all.deb
+```
+
+Das Paket liegt direkt im Repository unter `downloads/`. Ein GitHub-Release für Version 2.2 wurde noch nicht veröffentlicht.
+
+SHA-256: `da8e70a8f9b900c3e3a962b0b06b6ec2672198738e4eadbf589b65f289afb796`
+
+### Frühere Installationspakete (Version 2.0)
+
+Die bisherigen Installationspakete der Version 2.0 stehen über die GitHub-Releases zur Verfügung. Das DEB-Paket für Version 2.2 ist oben direkt verlinkt:
 
 https://github.com/media-vm/gold-silber-rechner/releases
 
