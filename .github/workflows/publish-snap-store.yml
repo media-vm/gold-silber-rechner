@@ -3,6 +3,11 @@ name: Publish Snap 2.2 to Snap Store
 on:
   workflow_dispatch:
     inputs:
+      architecture:
+        description: Snap architecture to publish
+        type: choice
+        options: [amd64, arm64]
+        default: amd64
       verify_only:
         description: Only verify the public stable channel without uploading
         type: boolean
@@ -18,6 +23,8 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-24.04
+    env:
+      SNAP_ARCH: ${{ inputs.architecture || 'amd64' }}
     steps:
       - name: Check Snap Store credentials
         if: ${{ !inputs.verify_only }}
@@ -34,8 +41,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          gh release download v2.2 --pattern gold-silber-rechner_2.2_amd64.snap
-          echo '7cee35af4f666833b484125c48acaab83728d47ebf363e1c099004ea296ef32d  gold-silber-rechner_2.2_amd64.snap' | sha256sum --check
+          package="gold-silber-rechner_2.2_${SNAP_ARCH}.snap"
+          gh release download v2.2 --pattern "$package"
+          case "$SNAP_ARCH" in
+            amd64) digest=7cee35af4f666833b484125c48acaab83728d47ebf363e1c099004ea296ef32d ;;
+            arm64) digest=bdde9fc2c5ce8e12159d56e2210f2dc30e2ce7f7d3b326b01efc22fec2e1b052 ;;
+            *) exit 1 ;;
+          esac
+          echo "$digest  $package" | sha256sum --check
       - name: Install Snapcraft
         if: ${{ !inputs.verify_only }}
         run: sudo snap install snapcraft --classic
@@ -43,25 +56,26 @@ jobs:
         if: ${{ !inputs.verify_only }}
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        run: snapcraft upload gold-silber-rechner_2.2_amd64.snap --release=stable
+        run: snapcraft upload "gold-silber-rechner_2.2_${SNAP_ARCH}.snap" --release=stable
       - name: Verify public stable channel
         run: |
           python3 - <<'PYVERIFY'
-          import json, urllib.request
+          import json, os, urllib.request
+          architecture = os.environ['SNAP_ARCH']
           request = urllib.request.Request(
               'https://api.snapcraft.io/v2/snaps/info/gold-silber-rechner',
-              headers={'Snap-Device-Series': '16', 'Snap-Device-Architecture': 'amd64'},
+              headers={'Snap-Device-Series': '16', 'Snap-Device-Architecture': architecture},
           )
           with urllib.request.urlopen(request, timeout=30) as response:
               data = json.load(response)
           channels = data.get('channel-map', [])
           stable = [entry for entry in channels
                     if entry['channel']['name'] == 'stable'
-                    and entry['channel']['architecture'] == 'amd64'
+                    and entry['channel']['architecture'] == architecture
                     and entry['channel']['track'] == 'latest']
-          assert stable, 'No public latest/stable channel for amd64'
+          assert stable, 'No public latest/stable channel for ' + architecture
           for entry in stable:
-              print('::notice::Public amd64 latest/stable: version '
+              print('::notice::Public ' + architecture + ' latest/stable: version '
                     + entry['version'] + ', revision ' + str(entry['revision']))
               assert entry['version'] == '2.2', 'Public stable channel is not version 2.2'
           PYVERIFY
