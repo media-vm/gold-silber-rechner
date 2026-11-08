@@ -1,0 +1,41 @@
+name: Publish signed Windows 11 executable
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check file identity and Authenticode signature
+        shell: pwsh
+        run: |
+          $exe = 'downloads/Gold-Silber-Rechner-2.2.exe'
+          $expectedHash = '1b82765ede4c1d3addca9e2700e935ab264bebe1df4fe65210a5aaa0bfba4b2f'
+          if ((Get-FileHash $exe -Algorithm SHA256).Hash -ne $expectedHash) {
+            throw 'Executable hash does not match approved signed upload'
+          }
+          $signature = Get-AuthenticodeSignature $exe
+          if ($signature.SignerCertificate.Thumbprint -ne '5F2BD8D34D846C0197AC5A58343B6FDD407DE639') {
+            throw 'Unexpected signing certificate'
+          }
+          if (-not $signature.TimeStamperCertificate) { throw 'Missing timestamp' }
+          # Trust only the pinned public signing certificate on this temporary runner.
+          $cer = Join-Path $env:RUNNER_TEMP 'signer.cer'
+          Export-Certificate -Cert $signature.SignerCertificate -FilePath $cer | Out-Null
+          Import-Certificate -FilePath $cer -CertStoreLocation Cert:\CurrentUser\Root | Out-Null
+          Import-Certificate -FilePath $cer -CertStoreLocation Cert:\CurrentUser\TrustedPublisher | Out-Null
+          $signature = Get-AuthenticodeSignature $exe
+          if ($signature.Status -ne 'Valid') {
+            throw "Signature validation failed: $($signature.StatusMessage)"
+          }
+          Write-Output '::notice::Pinned self-signed Authenticode signature and timestamp verified'
+      - name: Publish the exact signed executable
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release upload v2.2 downloads/Gold-Silber-Rechner-2.2.exe --clobber

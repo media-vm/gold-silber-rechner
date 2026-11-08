@@ -53,4 +53,4 @@ jobs:
               assert struct.unpack_from('<H', content, offset+4)[0] == machine
               print(name, hashlib.sha256(content).hexdigest())
           PY
-          gh release upload v2.2 executables/Gold-Silber-Rechner-2.2.exe executables/Gold-Silber-Rechner-2.2-Windows7.exe --clobber
+          gh release upload v2.2 executables/Gold-Silber-Rechner-2.2.exe executables/Gold-Silber-Rechner-2.2-Windows7.exe

@@ -20,6 +20,14 @@ Aktuelle Desktop-Pakete: [GitHub-Release v2.2](https://github.com/media-vm/gold-
 
 Die Anwendung kann direkt gestartet werden; Python muss nicht separat installiert werden.
 
+Die Windows-11-Datei wurde vom Herausgeber selbstsigniert und mit einem DigiCert-Zeitstempel versehen. Das Zertifikat ist nicht automatisch auf anderen Rechnern vertrauenswürdig; SmartScreen-Warnungen können weiterhin erscheinen. Die Windows-7-Datei ist unverändert.
+
+SHA-256 Windows 11: `1b82765ede4c1d3addca9e2700e935ab264bebe1df4fe65210a5aaa0bfba4b2f`
+
+Zertifikat-Fingerabdruck (SHA-1): `5F2BD8D34D846C0197AC5A58343B6FDD407DE639`
+
+Die signierte EXE liegt zusätzlich unter `downloads/Gold-Silber-Rechner-2.2.exe`. Neue reguläre Builds werden noch nicht automatisch signiert. Der reguläre Veröffentlichungsworkflow überschreibt bestehende Release-Dateien daher nicht automatisch.
+
 ### Windows 7 – Version 2.2 (32 Bit, Kompatibilitätsbuild)
 
 [Gold-Silber-Rechner-2.2-Windows7.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2-Windows7.exe)
