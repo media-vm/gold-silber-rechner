@@ -17,7 +17,7 @@ import requests
 
 __author__ = "Volker Andreas Müller"
 __credits__ = "Developed with assistance from ChatGPT by OpenAI"
-__version__ = "2.2"
+__version__ = "2.3"
 
 GRAMM_PRO_UNZE = Decimal("31.1034768")
 GRAMM_PRO_PFUND = Decimal("453.59237")

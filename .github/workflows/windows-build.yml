@@ -34,11 +34,11 @@ jobs:
           - target: Windows11
             python: '3.13'
             architecture: x64
-            filename: Gold-Silber-Rechner-2.2.exe
+            filename: Gold-Silber-Rechner-2.3.exe
           - target: Windows7
             python: '3.8.10'
             architecture: x86
-            filename: Gold-Silber-Rechner-2.2-Windows7.exe
+            filename: Gold-Silber-Rechner-2.3-Windows7.exe
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -64,7 +64,7 @@ jobs:
               runpy.run_path('packaging/windows7-runtime-hook.py')
           from decimal import Decimal
           app = runpy.run_path('gold-silver-value-calculator-german-v2.2.py')
-          assert app['__version__'] == '2.2'
+          assert app['__version__'] == '2.3'
           assert app['eingabe_lesen']('1.234,56', 'Test') == Decimal('1234.56')
           assert app['kursstand_formatieren']('2026-11-08T12:00:00Z') == '08.11.2026, 13:00 Uhr'
           class Field:
@@ -112,7 +112,7 @@ jobs:
               Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
             }
           }
-          if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.2') {
+          if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.3') {
             throw 'Incorrect embedded version metadata'
           }
       - name: Name executable and calculate checksum
@@ -122,6 +122,6 @@ jobs:
           Get-FileHash 'dist/${{ matrix.filename }}' -Algorithm SHA256
       - uses: actions/upload-artifact@v4
         with:
-          name: Gold-Silber-Rechner-2.2-${{ matrix.target }}
+          name: Gold-Silber-Rechner-2.3-${{ matrix.target }}
           path: dist/${{ matrix.filename }}
           if-no-files-found: error
