@@ -63,6 +63,10 @@ parts:
       - ca-certificates
       - tzdata
 
+    prime:
+      - -downloads
+      - -downloads/**
+
     organize:
       gold-silver-value-calculator-german-v2.2.py: usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py
       gold-silber-icon.png: usr/share/gold-silber-rechner/gold-silber-icon.png
