@@ -20,7 +20,7 @@ Los ejecutables tienen la firma del autor y un sello de tiempo de DigiCert. La a
 ## Instalar desde Snap Store
 
 La [Calculadora de oro y plata](https://snapcraft.io/gold-silber-rechner)
-está disponible como versión 2.2 en `latest/stable` para amd64 y ARM64. En un sistema con
+está disponible como versión 2.3 en `latest/stable` para amd64 (revisión 11) y ARM64 (revisión 10). En un sistema con
 Snap instalado:
 
 ```sh

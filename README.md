@@ -33,9 +33,9 @@ sudo apt install ./gold-silber-rechner_2.3-1_all.deb
 
 [SHA-256-Prüfsummen der drei Pakete](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/SHA256SUMS.txt)
 
-### Snap – Version 2.2 (amd64 und ARM64)
+### Snap – Version 2.3 (amd64 und ARM64)
 
-Im Snap Store im Kanal `latest/stable` verfügbar: amd64 Revision 9, ARM64 Revision 8. Bestehende Installation aktualisieren:
+Im [Snap Store](https://snapcraft.io/gold-silber-rechner) im Kanal `latest/stable` verfügbar: amd64 Revision 11, ARM64 Revision 10. Bestehende Installation aktualisieren:
 
 ```bash
 sudo snap refresh gold-silber-rechner
@@ -45,7 +45,7 @@ sudo snap refresh gold-silber-rechner
 
 [ARM64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_arm64.snap)
 
-Der Snap im Store enthält Deutsch und Spanisch auf dem Stand 2.2. Die oben verlinkten Snap-Dateien gehören zum Archiv-Release 2.2.
+Der Snap im Store enthält Deutsch und Spanisch auf dem Stand 2.3. Die oben verlinkten Snap-Dateien gehören zum Archiv-Release 2.2.
 
 ### Android – weiterhin Version 2.0
 
