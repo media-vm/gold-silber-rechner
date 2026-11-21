@@ -17,7 +17,7 @@ import requests
 
 __author__ = "Volker Andreas Müller"
 __credits__ = "Developed with assistance from ChatGPT by OpenAI"
-__version__ = "2.3"
+__version__ = "2.4"
 
 GRAMM_PRO_UNZE = Decimal("31.1034768")
 GRAMM_PRO_PFUND = Decimal("453.59237")
@@ -31,6 +31,13 @@ GEWICHTSEINHEITEN = {
     "Arroba (25 lb)": 25 * GRAMM_PRO_PFUND,
     "Quintal (100 lb)": 100 * GRAMM_PRO_PFUND,
     "Quintal métrico (100 kg)": Decimal("100000"),
+}
+GEWICHTSEINHEITEN_EN = {
+    "Gram (g)": Decimal("1"),
+    "Troy ounce (oz t)": GRAMM_PRO_UNZE,
+    "Ounce (oz)": Decimal("28.349523125"),
+    "Pound (lb)": GRAMM_PRO_PFUND,
+    "Kilogram (kg)": Decimal("1000"),
 }
 KURS_URL = "https://gsr.linuga.org/v1/latest"
 WECHSELKURS_URL = "https://api.frankfurter.dev/v2/rates"
@@ -68,11 +75,23 @@ WAEHRUNGEN_DE = {
     "CHF": ("Schweizer Franken", 2),
     "USD": ("US-Dollar", 2),
 }
+WAEHRUNGEN_EN = {
+    "USD": ("US dollar", 2),
+    "EUR": ("Euro", 2),
+    "INR": ("Indian rupee", 2),
+    "PKR": ("Pakistani rupee", 2),
+    "NGN": ("Nigerian naira", 2),
+    "PHP": ("Philippine peso", 2),
+    "TZS": ("Tanzanian shilling", 2),
+    "GBP": ("Pound sterling", 2),
+    "ZAR": ("South African rand", 2),
+    "KES": ("Kenyan shilling", 2),
+    "UGX": ("Ugandan shilling", 0),
+}
 
-if getattr(sys, "frozen", False):
-    PROGRAMM_ORDNER = os.path.dirname(sys.executable)
-else:
-    PROGRAMM_ORDNER = os.path.dirname(os.path.abspath(__file__))
+RESSOURCEN_ORDNER = getattr(
+    sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))
+)
 
 FEINHEITEN = {
     "Silber": [
@@ -165,12 +184,62 @@ SPANISCH = {
     "Berechnet wird der theoretische Materialwert.\nSammlerwert, Verarbeitung und Händlerabschläge sind nicht enthalten.": "Se calcula el valor teórico del metal.\nNo incluye el valor de colección, la mano de obra\nni los márgenes comerciales.",
     "Version {version}\nKursdaten: Metals.Dev": "Versión {version}\nCotizaciones: Metals.Dev",
 }
+ENGLISCH = {
+    "Gold- und Silberrechner": "Gold and Silver Calculator",
+    "Silber": "Silver",
+    "Gold": "Gold",
+    "Der Kurszeitstempel fehlt oder ist ungültig.": "The metal price timestamp is missing or invalid.",
+    "{name} muss eine endliche Zahl größer als 0 und höchstens 10¹⁵ sein.": "{name} must be a finite number greater than 0 and no more than 10¹⁵.",
+    "{name}: Bitte beispielsweise 1234,56 oder 1.234,56 eingeben.": "{name}: Enter a number such as 1234.56 or 1,234.56.",
+    "{name}: Bitte eine gültige Zahl eingeben.": "{name}: Enter a valid number.",
+    "Eingaben geändert. Bitte neu berechnen.": "Inputs changed. Calculate again.",
+    "Der Kursserver meldet einen Fehler oder liefert ungültige Daten.": "The price service reported an error or returned invalid data.",
+    "Erwartet werden EUR pro Feinunze (toz).": "Expected a price in EUR per troy ounce (oz t).",
+    "Die Metallpreise fehlen.": "The metal prices are missing.",
+    "Goldpreis": "Gold price",
+    "Silberpreis": "Silver price",
+    "Der Kurszeitstempel liegt in der Zukunft.": "The metal price timestamp is in the future.",
+    "Kurs wird geladen …": "Loading metal prices…",
+    "Kursstand: ": "Metal prices as of ",
+    "Kurse erfolgreich geladen.": "Metal prices updated.",
+    "Kursabruf fehlgeschlagen. Vorhandene Kurse bleiben erhalten.": "Could not refresh metal prices. Previously loaded prices are still available.",
+    "Fehler beim Kursabruf": "Could not load metal prices",
+    "Kurse nicht verfügbar. Preise können manuell eingegeben werden.\n\n": "Metal prices are unavailable. You can enter a price manually.",
+    "Preis pro Feinunze": "Price per troy ounce",
+    "Gewicht": "Weight",
+    "Bitte eine gültige Feinheit auswählen.": "Select a valid purity.",
+    "Feingewicht: ": "Pure metal weight: ",
+    "Feinunzen: ": "Troy ounces of pure metal: ",
+    "Metallwert wurde berechnet.": "Metal value calculated.",
+    "Ungültige Eingabe.": "Invalid input.",
+    "Ungültige Eingabe": "Invalid input",
+    "Bereit.": "Ready.",
+    "Metall:": "Metal:",
+    "Währung:": "Currency:",
+    "Preis pro Feinunze ({code}):": "Price per troy ounce ({code}):",
+    "Wechselkurs vom {datum} (Frankfurter)": "Exchange rate as of {datum} (Frankfurter)",
+    "Kein aktueller Wechselkurs. Preis in {code} manuell eingeben.": "Exchange rate unavailable. Enter the price in {code} manually.",
+    "Manuell eingegebener Preis ({code})": "Manually entered price ({code})",
+    "Kein Metallkurs verfügbar. Preis in {code} manuell eingeben.": "Metal price unavailable. Enter the price in {code} manually.",
+    "Gewicht des Gegenstands in g:": "Item weight:",
+    "Feinheit:": "Purity (‰):",
+    "Berechnen": "Calculate",
+    "Zurücksetzen": "Reset",
+    "Beenden": "Exit",
+    "Fenster immer im Vordergrund halten": "Keep window on top",
+    "Ergebnis": "Result",
+    "Berechnet wird der theoretische Materialwert.\nSammlerwert, Verarbeitung und Händlerabschläge sind nicht enthalten.": "Estimates the value of the metal content.\nThis excludes collectible value, workmanship,\nand dealer margins.",
+    "Version {version}\nKursdaten: Metals.Dev": "Version {version}\nMetal prices: Metals.Dev",
+}
+
 sprache = "de"
 
 
 def _(text):
     if sprache == "es":
         return SPANISCH[text]
+    if sprache == "en":
+        return ENGLISCH[text]
     return text
 
 
@@ -182,7 +251,9 @@ def systemsprache():
     else:
         wert = locale.getlocale()[0] or ""
     sprachcode = re.split(r"[_\-.]", wert.lower(), maxsplit=1)[0]
-    return "es" if sprachcode in ("es", "spanish") else "de"
+    return {"es": "es", "spanish": "es", "en": "en", "english": "en"}.get(
+        sprachcode, "de"
+    )
 
 
 gold_preis = None
@@ -210,6 +281,8 @@ def kursstand_formatieren(zeit):
     datum = zeitstempel_lesen(zeit)
     if sprache == "es":
         return datum.astimezone(timezone.utc).strftime("%d/%m/%Y, %H:%M UTC")
+    if sprache == "en":
+        return datum.astimezone(timezone.utc).strftime("%m/%d/%Y, %I:%M %p UTC")
     try:
         return datum.astimezone(
             ZoneInfo("Europe/Berlin")
@@ -220,13 +293,11 @@ def kursstand_formatieren(zeit):
         ).strftime("%d.%m.%Y, %H:%M UTC")
 
 
-def zahl_deutsch_formatieren(wert, nachkommastellen=2):
-    return (
-        f"{wert:,.{nachkommastellen}f}"
-        .replace(",", "X")
-        .replace(".", ",")
-        .replace("X", ".")
-    )
+def zahl_formatieren(wert, nachkommastellen=2):
+    formatiert = f"{wert:,.{nachkommastellen}f}"
+    if sprache == "en":
+        return formatiert
+    return formatiert.translate(str.maketrans(",.", ".,"))
 
 
 def positive_zahl(wert, name):
@@ -250,12 +321,15 @@ def positive_zahl(wert, name):
 
 
 def eingabe_lesen(text, name):
-    """Erlaubt 1234,56, 1.234,56 und 1234.56.
-
-    Ein Punkt ohne Komma ist immer ein Dezimalpunkt.
-    Tausender deshalb beispielsweise als 1.234,00 eingeben.
-    """
+    """Liest Dezimalzahlen mit den Trennzeichen des gewählten Sprachmodus."""
     text = text.strip()
+
+    if sprache == "en":
+        if not re.fullmatch(r"(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)(?:\.[0-9]+)?|\.[0-9]+", text):
+            raise ValueError(
+                _("{name}: Bitte beispielsweise 1234,56 oder 1.234,56 eingeben.").format(name=name)
+            )
+        return positive_zahl(text.replace(",", ""), name)
 
     if sprache == "es" and re.fullmatch(r"[0-9]{1,3}(?:,[0-9]{3})+\.[0-9]+", text):
         text = text.replace(",", "")
@@ -281,7 +355,11 @@ def ergebnis_verwerfen(event=None):
 
 
 def waehrungen():
-    return WAEHRUNGEN if sprache == "es" else WAEHRUNGEN_DE
+    return {"es": WAEHRUNGEN, "de": WAEHRUNGEN_DE, "en": WAEHRUNGEN_EN}[sprache]
+
+
+def gewichtseinheiten():
+    return GEWICHTSEINHEITEN_EN if sprache == "en" else GEWICHTSEINHEITEN
 
 
 def ausgewaehlte_waehrung():
@@ -324,12 +402,12 @@ def preisfeld_aktualisieren():
         if code != "EUR":
             faktor, datum = devisenkurs
             preis *= faktor
-            if sprache == "es":
-                datum_text = datum.strftime("%d/%m/%Y")
-            else:
-                datum_text = datum.strftime("%d.%m.%Y")
+            datumsformat = {"de": "%d.%m.%Y", "es": "%d/%m/%Y", "en": "%m/%d/%Y"}
+            datum_text = datum.strftime(datumsformat[sprache])
             hinweis += "\n" + _("Wechselkurs vom {datum} (Frankfurter)").format(datum=datum_text)
-        wert = format(preis, "f").replace(".", ",")
+        wert = format(preis, "f")
+        if sprache != "en":
+            wert = wert.replace(".", ",")
 
     kursstand_variable.set(hinweis)
     if unzenpreis_variable.get() != wert:
@@ -383,11 +461,15 @@ def feinheit_anzeigen(wert, metall):
         dineros, granos = wert.split(":")
         return f"{dineros} dineros, {granos} granos"
     if metall == "Gold" and wert in GOLD_KARAT:
-        einheit = "quilates" if sprache == "es" else "Karat"
+        einheit = {"de": "Karat", "es": "quilates", "en": "karat"}[sprache]
         return f"{wert} ‰ · {GOLD_KARAT[wert]} {einheit}"
     if metall == "Silber" and wert == "925":
-        return "925 ‰ · Plata de ley (Sterling)" if sprache == "es" else "925 ‰ · Sterlingsilber"
-    return f"{wert} ‰" if sprache == "es" else wert
+        return {
+            "de": "925 ‰ · Sterlingsilber",
+            "es": "925 ‰ · Plata de ley (Sterling)",
+            "en": "925 ‰ · Sterling silver",
+        }[sprache]
+    return wert if sprache == "de" else f"{wert} ‰"
 
 
 def silber_granos(text):
@@ -606,21 +688,22 @@ def berechnen():
         gewicht = eingabe_lesen(gewicht_eingabe.get(), _("Gewicht"))
         with localcontext() as kontext:
             kontext.prec = 40
-            if sprache == "es":
-                gewicht *= GEWICHTSEINHEITEN[gewichtseinheit_auswahl.get()]
+            if sprache != "de":
+                gewicht *= gewichtseinheiten()[gewichtseinheit_auswahl.get()]
             anteil = feinheitsanteil(feinheit_variable.get(), ausgewaehltes_metall())
             feingewicht = gewicht * anteil
             feinunzen = feingewicht / GRAMM_PRO_UNZE
             metallwert = feinunzen * preis
             code = ausgewaehlte_waehrung()
             nachkommastellen = waehrungen()[code][1]
-            einheit = angezeigte_waehrung(code)
+            betrag = zahl_formatieren(metallwert, nachkommastellen)
+            anzeige = f"${betrag}" if sprache == "en" and code == "USD" else f"{betrag} {angezeigte_waehrung(code)}"
 
             ergebnis_variable.set(
-                f"{zahl_deutsch_formatieren(metallwert, nachkommastellen)} {einheit}\n\n"
+                f"{anzeige}\n\n"
                 f"{_('Feingewicht: ')}"
-                f"{zahl_deutsch_formatieren(feingewicht, 2)} g\n"
-                f"{_('Feinunzen: ')}{zahl_deutsch_formatieren(feinunzen, 4)}"
+                f"{zahl_formatieren(feingewicht, 2)} g\n"
+                f"{_('Feinunzen: ')}{zahl_formatieren(feinunzen, 4)}"
             )
 
         status_variable.set(_("Metallwert wurde berechnet."))
@@ -632,7 +715,7 @@ def berechnen():
 def eingaben_loeschen():
     manuelle_preise.clear()
     gewicht_eingabe.delete(0, tk.END)
-    if sprache == "es":
+    if sprache != "de":
         gewichtseinheit_auswahl.current(0)
     metall_auswahl.current(0)
     feinheiten_aktualisieren()
@@ -722,13 +805,16 @@ def main():
     fenster.resizable(True, True)
     fenster.attributes("-topmost", True)
 
-    icon_datei = os.path.join(PROGRAMM_ORDNER, "gold-silber-icon.png")
-    if os.path.exists(icon_datei):
-        try:
-            icon = tk.PhotoImage(file=icon_datei)
+    png_icon = os.path.join(RESSOURCEN_ORDNER, "gold-silber-icon.png")
+    ico_icon = os.path.join(RESSOURCEN_ORDNER, "gold-silber-icon.ico")
+    try:
+        if sys.platform == "win32" and os.path.isfile(ico_icon):
+            fenster.iconbitmap(ico_icon)
+        elif os.path.isfile(png_icon):
+            icon = tk.PhotoImage(file=png_icon)
             fenster.iconphoto(True, icon)
-        except tk.TclError:
-            pass
+    except tk.TclError:
+        pass
 
     hauptbereich = ttk.Frame(fenster, padding=25)
     hauptbereich.pack(fill="both", expand=True)
@@ -806,13 +892,13 @@ def main():
         row=4, column=1, sticky="ew", padx=5, pady=9
     )
     gewicht_eingabe = ttk.Entry(
-        gewichtsfeld, textvariable=gewicht_variable, width=10 if sprache == "es" else 28
+        gewichtsfeld, textvariable=gewicht_variable, width=28 if sprache == "de" else 10
     )
     gewicht_eingabe.pack(side="left", fill="x", expand=True)
-    if sprache == "es":
+    if sprache != "de":
         gewichtseinheit_auswahl = ttk.Combobox(
             gewichtsfeld,
-            values=list(GEWICHTSEINHEITEN),
+            values=list(gewichtseinheiten()),
             state="readonly",
             width=24,
         )
@@ -917,6 +1003,6 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--lang", choices=("de", "es"), help="Deutsch / Español")
+    parser.add_argument("--lang", choices=("de", "es", "en"), help="Deutsch / Español / English (US)")
     sprache = parser.parse_args().lang or systemsprache()
     main()

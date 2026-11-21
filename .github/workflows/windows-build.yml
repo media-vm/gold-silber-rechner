@@ -34,11 +34,11 @@ jobs:
           - target: Windows11
             python: '3.13'
             architecture: x64
-            filename: Gold-Silber-Rechner-2.3.exe
+            filename: Gold-Silver-Calculator-2.4-Windows-x64.exe
           - target: Windows7
             python: '3.8.10'
             architecture: x86
-            filename: Gold-Silber-Rechner-2.3-Windows7.exe
+            filename: Gold-Silver-Calculator-2.4-Windows7-x86.exe
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -64,7 +64,7 @@ jobs:
               runpy.run_path('packaging/windows7-runtime-hook.py')
           from decimal import Decimal
           app = runpy.run_path('gold-silver-value-calculator-german-v2.2.py')
-          assert app['__version__'] == '2.3'
+          assert app['__version__'] == '2.4'
           assert app['eingabe_lesen']('1.234,56', 'Test') == Decimal('1234.56')
           assert app['kursstand_formatieren']('2026-11-08T12:00:00Z') == '08.11.2026, 13:00 Uhr'
           class Field:
@@ -86,16 +86,50 @@ jobs:
           app['berechnen']()
           assert ns['ergebnis_variable'].get().startswith('80,00 EUR')
           assert 'Peso de metal puro' in ns['ergebnis_variable'].get()
-          print('PASS: both languages, number formats and Europe/Berlin time zone')
+          ns['sprache'] = 'en'
+          ns['waehrung_auswahl'] = Field('USD — US dollar')
+          ns['gewichtseinheit_auswahl'] = Field('Gram (g)')
+          ns['unzenpreis_eingabe'] = Field('31.1034768')
+          assert app['eingabe_lesen']('1,234.56', 'Weight') == Decimal('1234.56')
+          app['berechnen']()
+          assert ns['ergebnis_variable'].get().startswith('$80.00')
+          print('PASS: all three languages, number formats and Europe/Berlin time zone')
           '@ | python -
       - name: Build executable
         run: python -m PyInstaller --clean --noconfirm Gold-Silber-Rechner.spec
       - name: Smoke test executable GUI
         shell: pwsh
         run: |
-          $exe = (Resolve-Path 'dist/Gold-Silber-Rechner.exe').Path
-          $titles = @{ de = 'Gold- und Silberrechner'; es = 'Calculadora de oro y plata' }
-          foreach ($language in @('de', 'es')) {
+          $testDir = Join-Path $env:RUNNER_TEMP 'standalone-gsr'
+          New-Item -ItemType Directory -Path $testDir | Out-Null
+          Copy-Item 'dist/Gold-Silber-Rechner.exe' -Destination $testDir
+          $exe = Join-Path $testDir 'Gold-Silber-Rechner.exe'
+          Add-Type -AssemblyName System.Drawing
+          Add-Type @'
+          using System;
+          using System.Runtime.InteropServices;
+          public static class WindowIcons {
+              [DllImport("user32.dll", CharSet = CharSet.Auto)]
+              public static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+          }
+          '@
+          function Get-IconPixels($icon) {
+            $bitmap = $icon.ToBitmap()
+            try {
+              $scaled = New-Object System.Drawing.Bitmap($bitmap, 16, 16)
+              try {
+                $pixels = for ($y = 0; $y -lt 16; $y++) {
+                  for ($x = 0; $x -lt 16; $x++) { $scaled.GetPixel($x, $y).ToArgb() }
+                }
+                return ($pixels -join ',')
+              } finally { $scaled.Dispose() }
+            } finally { $bitmap.Dispose() }
+          }
+          $reference = New-Object System.Drawing.Icon((Resolve-Path 'gold-silber-icon.ico').Path, 32, 32)
+          $expectedIcon = Get-IconPixels $reference
+          $reference.Dispose()
+          $titles = @{ de = 'Gold- und Silberrechner'; es = 'Calculadora de oro y plata'; en = 'Gold and Silver Calculator' }
+          foreach ($language in @('de', 'es', 'en')) {
             $process = Start-Process -FilePath $exe -ArgumentList @('--lang', $language) -PassThru
             try {
               $ready = $false
@@ -107,12 +141,16 @@ jobs:
                 if ($window) { $ready = $true; break }
               }
               if (-not $ready) { throw "Expected application window was not found for $language" }
-              Write-Output "PASS: packaged application window for $language"
+              $handle = [WindowIcons]::SendMessage($window[0].MainWindowHandle, 0x007F, [IntPtr]1, [IntPtr]::Zero)
+              if ($handle -eq [IntPtr]::Zero) { throw "Missing application window icon for $language" }
+              $icon = [System.Drawing.Icon]::FromHandle($handle)
+              if ((Get-IconPixels $icon) -ne $expectedIcon) { throw "Incorrect application window icon for $language" }
+              Write-Output "PASS: standalone application window and GSR icon for $language"
             } finally {
               Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
             }
           }
-          if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.3') {
+          if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.4') {
             throw 'Incorrect embedded version metadata'
           }
       - name: Name executable and calculate checksum
@@ -122,6 +160,6 @@ jobs:
           Get-FileHash 'dist/${{ matrix.filename }}' -Algorithm SHA256
       - uses: actions/upload-artifact@v4
         with:
-          name: Gold-Silber-Rechner-2.3-${{ matrix.target }}
+          name: Gold-Silver-Calculator-2.4-${{ matrix.target }}
           path: dist/${{ matrix.filename }}
           if-no-files-found: error

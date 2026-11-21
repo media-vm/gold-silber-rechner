@@ -16,7 +16,7 @@ a = Analysis(
     ['gold-silver-value-calculator-german-v2.2.py'],
     pathex=[],
     binaries=[],
-    datas=collect_data_files('tzdata'),
+    datas=collect_data_files('tzdata') + [('gold-silber-icon.ico', '.')],
     hiddenimports=['backports.zoneinfo'] if legacy else [],
     hookspath=[],
     hooksconfig={},
