@@ -13,6 +13,21 @@ La [versión 2.2 en español](https://github.com/media-vm/gold-silber-rechner/re
 incluye un paquete DEB para Debian y Ubuntu, un ZIP con el código, las
 dependencias y las instrucciones, y el archivo Python por separado.
 
+## Instalar desde Snap Store
+
+La [Calculadora de oro y plata](https://snapcraft.io/gold-silber-rechner)
+está disponible en `latest/stable` para amd64 y ARM64. En un sistema con
+Snap instalado:
+
+```sh
+sudo snap install gold-silber-rechner
+snap run gold-silber-rechner --lang es
+```
+
+Si ya tienes la aplicación, actualízala con
+`sudo snap refresh gold-silber-rechner --channel=latest/stable`. En sistemas
+configurados en español, el menú muestra «Calculadora de oro y plata».
+
 ## Ejecutar desde el código fuente
 
 Esta edición en español está disponible como código fuente de la rama
