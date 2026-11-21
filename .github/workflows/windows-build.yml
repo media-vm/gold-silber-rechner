@@ -114,8 +114,6 @@ jobs:
               [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
               public static extern IntPtr LoadImage(IntPtr instance, string path, uint type, int w, int h, uint flags);
               [DllImport("user32.dll")]
-              public static extern int GetSystemMetrics(int index);
-              [DllImport("user32.dll")]
               public static extern bool DestroyIcon(IntPtr icon);
           }
           '@
@@ -132,12 +130,6 @@ jobs:
             } finally { $bitmap.Dispose() }
           }
           $iconPath = (Resolve-Path 'gold-silber-icon.ico').Path
-          $iconWidth = [WindowIcons]::GetSystemMetrics(49)
-          $iconHeight = [WindowIcons]::GetSystemMetrics(50)
-          $referenceHandle = [WindowIcons]::LoadImage([IntPtr]::Zero, $iconPath, 1, $iconWidth, $iconHeight, 0x10)
-          if ($referenceHandle -eq [IntPtr]::Zero) { throw 'Could not load the reference title-bar icon' }
-          $expectedIcon = Get-IconPixels ([System.Drawing.Icon]::FromHandle($referenceHandle))
-          [WindowIcons]::DestroyIcon($referenceHandle) | Out-Null
           $titles = @{ de = 'Gold- und Silberrechner'; es = 'Calculadora de oro y plata'; en = 'Gold and Silver Calculator' }
           foreach ($language in @('de', 'es', 'en')) {
             $process = Start-Process -FilePath $exe -ArgumentList @('--lang', $language) -PassThru
@@ -154,7 +146,14 @@ jobs:
               $handle = [WindowIcons]::SendMessage($window[0].MainWindowHandle, 0x007F, [IntPtr]::Zero, [IntPtr]::Zero)
               if ($handle -eq [IntPtr]::Zero) { throw "Missing application window icon for $language" }
               $icon = [System.Drawing.Icon]::FromHandle($handle)
-              if ((Get-IconPixels $icon) -ne $expectedIcon) { throw "Incorrect title-bar icon for $language (actual: $($icon.Size), expected: ${iconWidth}x${iconHeight})" }
+              $referenceHandle = [WindowIcons]::LoadImage([IntPtr]::Zero, $iconPath, 1, $icon.Width, $icon.Height, 0x10)
+              if ($referenceHandle -eq [IntPtr]::Zero) { throw 'Could not load the reference title-bar icon' }
+              try {
+                $expectedIcon = Get-IconPixels ([System.Drawing.Icon]::FromHandle($referenceHandle))
+                if ((Get-IconPixels $icon) -ne $expectedIcon) { throw "Incorrect title-bar icon for $language at $($icon.Size)" }
+              } finally {
+                [WindowIcons]::DestroyIcon($referenceHandle) | Out-Null
+              }
               Write-Output "PASS: standalone application window and GSR icon for $language"
             } finally {
               Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
