@@ -4,23 +4,23 @@
 
 Calcula el valor del metal de una joya, moneda o lingote según su peso en
 gramos, su pureza en milésimas y el precio por onza troy. La aplicación
-muestra el resultado en euros, el peso de metal puro y su equivalente en
+muestra el resultado en la moneda elegida, el peso de metal puro y su equivalente en
 onzas troy.
 
 ## Descargar
 
-La [versión 2.2 en español](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es)
-incluye un [EXE portátil para Windows 10 y 11 de 64 bits](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2-es/calculadora-de-oro-y-plata-2.2-windows-x64.exe),
-un paquete DEB para Debian y Ubuntu, un ZIP con el código y las
-instrucciones, y el archivo Python por separado. El EXE abre la aplicación
-en español con un doble clic y está firmado con el certificado autofirmado
-de Volker Andreas Müller y un sello de tiempo de DigiCert.
-También hay un [ejecutable firmado para Windows 7 de 32 bits](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2-es/calculadora-de-oro-y-plata-2.2-windows7.exe).
+La [versión 2.3](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3) ofrece los mismos archivos para español y alemán:
+
+- [Windows 10 y 11 (64 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3.exe)
+- [Windows 7 (32 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3-Windows7.exe)
+- [Paquete DEB 2.3-1 para Debian y Ubuntu](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/gold-silber-rechner_2.3-1_all.deb)
+
+Los ejecutables tienen la firma del autor y un sello de tiempo de DigiCert. La aplicación usa el idioma del sistema. Puedes forzar el español con `--lang es`.
 
 ## Instalar desde Snap Store
 
 La [Calculadora de oro y plata](https://snapcraft.io/gold-silber-rechner)
-está disponible en `latest/stable` para amd64 y ARM64. En un sistema con
+está disponible como versión 2.2 en `latest/stable` para amd64 y ARM64. En un sistema con
 Snap instalado:
 
 ```sh
@@ -74,9 +74,7 @@ fuera del cálculo.
 
 ## Paquetes y licencia
 
-Los [paquetes publicados en la versión alemana v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2)
-son los de la edición anterior en alemán. En Debian o Ubuntu puedes construir
-el paquete de desarrollo `2.2-4` con `python3 packaging/build-deb.py`. Se genera
-en `dist/`.
+En Debian o Ubuntu puedes construir el paquete `2.3-1` con
+`python3 packaging/build-deb.py`. Se genera en `dist/`.
 
 El proyecto de Volker Andreas Müller se distribuye bajo la [licencia MIT](LICENSE).

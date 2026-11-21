@@ -1,6 +1,6 @@
 # Gold- und Silberrechner
 
-**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es) · [Código e instrucciones](README.es.md)
+**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3) · [Código e instrucciones](README.es.md)
 
 Der **Gold- und Silberrechner** ist eine kostenlose Anwendung zur Berechnung des Materialwerts von Gold und Silber anhand aktueller Edelmetallkurse.
 
@@ -8,51 +8,34 @@ Die Anwendung eignet sich zum Beispiel zur Bewertung von Münzen, Barren, Schmuc
 
 ## Version
 
-Aktuelle Quellcode-Version: **2.2**
+Aktuelle Quellcode-Version: **2.3**
 
 Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Version erhalten.
 
 ## Download
 
-Aktuelle Desktop-Pakete: [GitHub-Release v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2).
+Die gemeinsamen Downloads für Deutsch und Spanisch stehen im [GitHub-Release v2.3](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3). Die App wählt die Sprache anhand der Systemeinstellung. Mit `--lang de` oder `--lang es` kannst du sie direkt wählen.
 
-### Windows 11 – Version 2.2 (64 Bit)
+### Windows
 
-[Gold-Silber-Rechner-2.2.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2.exe)
+- [Windows 10/11, 64 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3.exe)
+- [Windows 7, 32 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3-Windows7.exe)
 
-Die Anwendung kann direkt gestartet werden; Python muss nicht separat installiert werden.
+Beide portablen Dateien wurden mit dem selbstsignierten Zertifikat von Volker Andreas Müller signiert und tragen einen DigiCert-Zeitstempel. Der Fingerabdruck des Zertifikats lautet `5F2BD8D34D846C0197AC5A58343B6FDD407DE639`. Start und Berechnung wurden auf dem Windows-CI-Runner geprüft. Ein Starttest auf einem echten Windows-7-System steht aus.
 
-Die Windows-11-Datei wurde vom Herausgeber selbstsigniert und mit einem DigiCert-Zeitstempel versehen. Das Zertifikat ist nicht automatisch auf anderen Rechnern vertrauenswürdig; SmartScreen-Warnungen können weiterhin erscheinen.
+### Debian / Ubuntu
 
-SHA-256 Windows 11: `1b82765ede4c1d3addca9e2700e935ab264bebe1df4fe65210a5aaa0bfba4b2f`
-
-Zertifikat-Fingerabdruck (SHA-1): `5F2BD8D34D846C0197AC5A58343B6FDD407DE639`
-
-Die signierte EXE liegt zusätzlich unter `downloads/Gold-Silber-Rechner-2.2.exe`. Neue reguläre Builds werden noch nicht automatisch signiert. Der reguläre Veröffentlichungsworkflow überschreibt bestehende Release-Dateien daher nicht automatisch.
-
-### Windows 7 – Version 2.2 (32 Bit, Kompatibilitätsbuild)
-
-[Gold-Silber-Rechner-2.2-Windows7.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2-Windows7.exe)
-
-Die EXE ist mit dem selbstsignierten Herausgeberzertifikat und DigiCert-Zeitstempel signiert. SHA-256: `eaef65acea8da5afab2d025b0b7ecae3394672e72280f827cee0e06bbd41bc87`.
-
-Dieser Build verwendet denselben Anwendungscode mit Python 3.8.10, PyInstaller 5.13.2 und einem Zoneinfo-Backport. Berechnung, Zeitzonendaten und Start der EXE wurden auf einem aktuellen Windows-CI-Runner geprüft. Ein Funktionstest auf einem echten Windows-7-Rechner steht noch aus. Die älteren Laufzeitbibliotheken sind für diesen Kompatibilitätsbuild erforderlich.
-
-### Debian / Ubuntu – Version 2.2, Paketrevision 2.2-3
-
-[DEB-Paket herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2-3_all.deb)
+[DEB-Paket 2.3-1 herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/gold-silber-rechner_2.3-1_all.deb)
 
 ```bash
-sudo apt install ./gold-silber-rechner_2.2-3_all.deb
+sudo apt install ./gold-silber-rechner_2.3-1_all.deb
 ```
 
-Das Paket enthält Deutsch und Spanisch. Die Oberfläche folgt der Systemsprache. Mit `gold-silber-rechner --lang es` kannst du Spanisch direkt wählen. [Alternativer Download von Linuga](https://linuga.org/gsr/downloads/gold-silber-rechner_2.2-3_all.deb).
-
-SHA-256: `61415952deaa2e0babe65b86ca1c1a10593e8cc1a4728b5a777271e446e48835`
+[SHA-256-Prüfsummen der drei Pakete](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/SHA256SUMS.txt)
 
 ### Snap – Version 2.2 (amd64 und ARM64)
 
-Im Snap Store im Kanal `latest/stable` verfügbar: amd64 ab Revision 6, ARM64 ab Revision 7. Bestehende Installation aktualisieren:
+Im Snap Store im Kanal `latest/stable` verfügbar: amd64 Revision 9, ARM64 Revision 8. Bestehende Installation aktualisieren:
 
 ```bash
 sudo snap refresh gold-silber-rechner
@@ -62,11 +45,11 @@ sudo snap refresh gold-silber-rechner
 
 [ARM64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_arm64.snap)
 
-Der ARM64-Snap enthält denselben Python-Quellstand. Paketinhalt, Quellcode-Prüfsumme und GUI-Start mit Beispielrechnung wurden auf einem nativen ARM64-Runner geprüft. Die öffentliche Store-Abfrage bestätigt Version 2.2, Revision 7 für ARM64.
+Der Snap im Store enthält Deutsch und Spanisch auf dem Stand 2.2. Die oben verlinkten Snap-Dateien gehören zum Archiv-Release 2.2.
 
 ### Android – weiterhin Version 2.0
 
-Die Android-APK wurde noch nicht auf Version 2.2 aktualisiert. Der Android-Quellcode und ein Android-Build sind in diesem Repository nicht enthalten.
+Die Android-APK bleibt bei Version 2.0. Der Android-Quellcode und ein Android-Build sind in diesem Repository nicht enthalten.
 
 [Bisherige Android-APK aus Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.0/gold-silver-calculator-v2.apk)
 
@@ -162,6 +145,6 @@ DEB reproduzierbar aus dem aktuellen Quellstand bauen:
 python3 packaging/build-deb.py
 ```
 
-Der Build auf `main` erzeugt den Entwicklungsstand als DEB-Revision 2.2-4 unter `dist/`. Der veröffentlichte DEB-Download ist Revision 2.2-3.
+Der Build auf `main` erzeugt das DEB-Paket 2.3-1 unter `dist/`.
 
-Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. `Publish Windows 2.2 executables` veröffentlicht beide geprüften Artefakte eines erfolgreichen Builds. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.
+Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. Für einen Release werden die Windows-Builds vor der Veröffentlichung wie in [AGENTS.md](AGENTS.md) beschrieben signiert und geprüft. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.
