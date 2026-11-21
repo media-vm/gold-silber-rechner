@@ -7,7 +7,13 @@ gramos, su pureza en milésimas y el precio por onza troy. La aplicación
 muestra el resultado en euros, el peso de metal puro y su equivalente en
 onzas troy.
 
-## Descargar y ejecutar
+## Descargar
+
+La [versión 2.2 en español](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es)
+incluye un paquete DEB para Debian y Ubuntu, un ZIP con el código, las
+dependencias y las instrucciones, y el archivo Python por separado.
+
+## Ejecutar desde el código fuente
 
 Esta edición en español está disponible como código fuente de la rama
 `es`. Para ejecutarla necesitas Python 3, Tkinter y un entorno virtual.
@@ -47,7 +53,7 @@ fuera del cálculo.
 
 ## Paquetes y licencia
 
-Los [paquetes publicados en v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2)
+Los [paquetes publicados en la versión alemana v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2)
 son los de la edición anterior en alemán. En Debian o Ubuntu puedes construir
 el paquete bilingüe `2.2-3` con `python3 packaging/build-deb.py`. Se genera
 en `dist/`.
