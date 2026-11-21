@@ -15,6 +15,7 @@ un paquete DEB para Debian y Ubuntu, un ZIP con el código y las
 instrucciones, y el archivo Python por separado. El EXE abre la aplicación
 en español con un doble clic y está firmado con el certificado autofirmado
 de Volker Andreas Müller y un sello de tiempo de DigiCert.
+También hay un [ejecutable firmado para Windows 7 de 32 bits](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2-es/calculadora-de-oro-y-plata-2.2-windows7.exe).
 
 ## Instalar desde Snap Store
 
