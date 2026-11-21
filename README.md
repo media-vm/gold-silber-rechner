@@ -22,7 +22,7 @@ Aktuelle Desktop-Pakete: [GitHub-Release v2.2](https://github.com/media-vm/gold-
 
 Die Anwendung kann direkt gestartet werden; Python muss nicht separat installiert werden.
 
-Die Windows-11-Datei wurde vom Herausgeber selbstsigniert und mit einem DigiCert-Zeitstempel versehen. Das Zertifikat ist nicht automatisch auf anderen Rechnern vertrauenswürdig; SmartScreen-Warnungen können weiterhin erscheinen. Die Windows-7-Datei ist unverändert.
+Die Windows-11-Datei wurde vom Herausgeber selbstsigniert und mit einem DigiCert-Zeitstempel versehen. Das Zertifikat ist nicht automatisch auf anderen Rechnern vertrauenswürdig; SmartScreen-Warnungen können weiterhin erscheinen.
 
 SHA-256 Windows 11: `1b82765ede4c1d3addca9e2700e935ab264bebe1df4fe65210a5aaa0bfba4b2f`
 
@@ -33,6 +33,8 @@ Die signierte EXE liegt zusätzlich unter `downloads/Gold-Silber-Rechner-2.2.exe
 ### Windows 7 – Version 2.2 (32 Bit, Kompatibilitätsbuild)
 
 [Gold-Silber-Rechner-2.2-Windows7.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2-Windows7.exe)
+
+Die EXE ist mit dem selbstsignierten Herausgeberzertifikat und DigiCert-Zeitstempel signiert. SHA-256: `eaef65acea8da5afab2d025b0b7ecae3394672e72280f827cee0e06bbd41bc87`.
 
 Dieser Build verwendet denselben Anwendungscode mit Python 3.8.10, PyInstaller 5.13.2 und einem Zoneinfo-Backport. Berechnung, Zeitzonendaten und Start der EXE wurden auf einem aktuellen Windows-CI-Runner geprüft. Ein Funktionstest auf einem echten Windows-7-Rechner steht noch aus. Die älteren Laufzeitbibliotheken sind für diesen Kompatibilitätsbuild erforderlich.
 
