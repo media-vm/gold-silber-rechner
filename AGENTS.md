@@ -6,6 +6,8 @@ Vor dem Austausch Signatur, Zertifikat-Fingerabdruck, Zeitstempel und SHA-256-Pr
 
 Private Schlüssel, PFX-Dateien und Passwörter bleiben im lokalen Signiervorgang. Wenn eine PFX entsperrt werden muss, das Passwort verdeckt im lokalen Signierdialog eingeben lassen. Es gehört nicht in den Chat, das Repository, Build-Artefakte oder Protokolle.
 
+Beim nächsten Windows-Build das GSR-Fenstersymbol in die portable PyInstaller-EXE einbetten und beim Start explizit als Tk-Fenstersymbol laden. Für die Windows-10/11- und die Windows-7-EXE jeweils prüfen, dass die Titelleiste auch bei einer alleinstehenden EXE in einem leeren Ordner das GSR-Symbol anstelle der Tk-Feder zeigt. Das im Explorer sichtbare EXE-Symbol allein gilt nicht als Nachweis.
+
 # Gemeinsamer Desktop-Quellcode
 
 Deutsch und Spanisch verwenden dieselbe Anwendungsdatei `gold-silver-value-calculator-german-v2.2.py` auf `main`. Änderungen an der Berechnung, der Oberfläche und dem Paketbau dort pflegen. `README.md` und `README.es.md` beschreiben die beiden Sprachmodi. Der Zweig `es` bleibt als Kompatibilitätsverweis für bestehende Links und ist kein eigener Entwicklungszweig.
