@@ -1,6 +1,8 @@
 # Gold- und Silberrechner
 
-**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3) · [Código e instrucciones](README.es.md)
+**English** · [Gold and Silver Calculator](README.en.md)
+
+**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.4) · [Código e instrucciones](README.es.md)
 
 Der **Gold- und Silberrechner** ist eine kostenlose Anwendung zur Berechnung des Materialwerts von Gold und Silber anhand aktueller Edelmetallkurse.
 
@@ -8,30 +10,30 @@ Die Anwendung eignet sich zum Beispiel zur Bewertung von Münzen, Barren, Schmuc
 
 ## Version
 
-Aktuelle Quellcode-Version: **2.3**
+Aktuelle Quellcode-Version: **2.4**
 
 Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Version erhalten.
 
 ## Download
 
-Die gemeinsamen Downloads für Deutsch und Spanisch stehen im [GitHub-Release v2.3](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3). Die App wählt die Sprache anhand der Systemeinstellung. Mit `--lang de` oder `--lang es` kannst du sie direkt wählen.
+Die gemeinsamen Downloads für Deutsch, Spanisch und Englisch stehen im [GitHub-Release v2.4](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.4). Die App wählt die Sprache anhand der Systemeinstellung. Mit `--lang de`, `--lang es` oder `--lang en` kannst du sie direkt wählen.
 
 ### Windows
 
-- [Windows 10/11, 64 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3.exe)
-- [Windows 7, 32 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3-Windows7.exe)
+- [Windows 10/11, 64 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows-x64.exe)
+- [Windows 7, 32 Bit](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows7-x86.exe)
 
 Beide portablen Dateien wurden mit dem selbstsignierten Zertifikat von Volker Andreas Müller signiert und tragen einen DigiCert-Zeitstempel. Der Fingerabdruck des Zertifikats lautet `5F2BD8D34D846C0197AC5A58343B6FDD407DE639`. Start und Berechnung wurden auf dem Windows-CI-Runner geprüft. Ein Starttest auf einem echten Windows-7-System steht aus.
 
 ### Debian / Ubuntu
 
-[DEB-Paket 2.3-1 herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/gold-silber-rechner_2.3-1_all.deb)
+[DEB-Paket 2.4-1 herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/gold-silber-rechner_2.4-1_all.deb)
 
 ```bash
-sudo apt install ./gold-silber-rechner_2.3-1_all.deb
+sudo apt install ./gold-silber-rechner_2.4-1_all.deb
 ```
 
-[SHA-256-Prüfsummen der drei Pakete](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/SHA256SUMS.txt)
+[SHA-256-Prüfsummen der drei Pakete](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/SHA256SUMS.txt)
 
 ### Snap – Version 2.3 (amd64 und ARM64)
 
@@ -98,7 +100,7 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 Die Desktop-Version wurde in **Python** entwickelt.
 
 Die grafische Benutzeroberfläche verwendet Tkinter.
-Die Datei `gold-silver-value-calculator-german-v2.2.py` ist der gemeinsame Entwicklungsstand für Deutsch und Spanisch. Beide Sprachen werden auf `main` gepflegt. Die veröffentlichten Pakete können einen älteren Stand enthalten.
+Die Datei `gold-silver-value-calculator-german-v2.2.py` ist der gemeinsame Entwicklungsstand für Deutsch, Spanisch und Englisch. Alle drei Sprachen werden auf `main` gepflegt. Die veröffentlichten Pakete können einen älteren Stand enthalten.
 
 Start aus dem Repository mit installiertem Python und Tkinter:
 
@@ -139,6 +141,6 @@ DEB reproduzierbar aus dem aktuellen Quellstand bauen:
 python3 packaging/build-deb.py
 ```
 
-Der Build auf `main` erzeugt das DEB-Paket 2.3-1 unter `dist/`.
+Der Build auf `main` erzeugt das DEB-Paket 2.4-1 unter `dist/`.
 
 Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. Für einen Release werden die Windows-Builds vor der Veröffentlichung wie in [AGENTS.md](AGENTS.md) beschrieben signiert und geprüft. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.

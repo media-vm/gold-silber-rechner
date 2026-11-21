@@ -10,4 +10,4 @@ Beim nächsten Windows-Build das GSR-Fenstersymbol in die portable PyInstaller-E
 
 # Gemeinsamer Desktop-Quellcode
 
-Deutsch und Spanisch verwenden dieselbe Anwendungsdatei `gold-silver-value-calculator-german-v2.2.py` auf `main`. Änderungen an der Berechnung, der Oberfläche und dem Paketbau dort pflegen. `README.md` und `README.es.md` beschreiben die beiden Sprachmodi. Der Zweig `es` bleibt als Kompatibilitätsverweis für bestehende Links und ist kein eigener Entwicklungszweig.
+Deutsch, Spanisch und Englisch verwenden dieselbe Anwendungsdatei `gold-silver-value-calculator-german-v2.2.py` auf `main`. Änderungen an der Berechnung, der Oberfläche und dem Paketbau dort pflegen. `README.md`, `README.es.md` und `README.en.md` beschreiben die drei Sprachmodi. Der Zweig `es` bleibt als Kompatibilitätsverweis für bestehende Links und ist kein eigener Entwicklungszweig.

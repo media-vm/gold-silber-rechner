@@ -1,6 +1,6 @@
 # Calculadora de oro y plata
 
-[Deutsch — Gold- und Silberrechner](README.md)
+[Deutsch — Gold- und Silberrechner](README.md) · [English](README.en.md)
 
 Calcula el valor del metal de una joya, moneda o lingote según su peso en
 gramos, su pureza en milésimas y el precio por onza troy. La aplicación
@@ -13,11 +13,11 @@ onzas troy.
 
 ## Descargar
 
-La [versión 2.3](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3) ofrece los mismos archivos para español y alemán:
+La [versión 2.4](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.4) ofrece los mismos archivos para español, alemán e inglés:
 
-- [Windows 10 y 11 (64 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3.exe)
-- [Windows 7 (32 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/Gold-Silber-Rechner-2.3-Windows7.exe)
-- [Paquete DEB 2.3-1 para Debian y Ubuntu](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.3/gold-silber-rechner_2.3-1_all.deb)
+- [Windows 10 y 11 (64 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows-x64.exe)
+- [Windows 7 (32 bits)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows7-x86.exe)
+- [Paquete DEB 2.4-1 para Debian y Ubuntu](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/gold-silber-rechner_2.4-1_all.deb)
 
 Los ejecutables tienen la firma del autor y un sello de tiempo de DigiCert. La aplicación usa el idioma del sistema. Puedes forzar el español con `--lang es`.
 
@@ -38,7 +38,7 @@ configurados en español, el menú muestra «Calculadora de oro y plata».
 
 ## Ejecutar desde el código fuente
 
-La interfaz en español comparte el mismo código Python que la alemana.
+La interfaz en español comparte el mismo código Python que las interfaces en alemán e inglés.
 La versión de desarrollo se mantiene en `main`. Para ejecutarla necesitas Python 3, Tkinter y un entorno virtual.
 En Debian y Ubuntu, instala `python3-tk` y `python3-venv` si te faltan.
 
@@ -78,7 +78,7 @@ fuera del cálculo.
 
 ## Paquetes y licencia
 
-En Debian o Ubuntu puedes construir el paquete `2.3-1` con
+En Debian o Ubuntu puedes construir el paquete `2.4-1` con
 `python3 packaging/build-deb.py`. Se genera en `dist/`.
 
 El proyecto de Volker Andreas Müller se distribuye bajo la [licencia MIT](LICENSE).
