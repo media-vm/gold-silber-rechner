@@ -1,7 +1,7 @@
 name: gold-silber-rechner
 title: Gold- und Silberrechner
 version: '2.2'
-summary: Berechnet den Materialwert von Gold und Silber
+summary: Gold- und Silberrechner / Calculadora de oro y plata
 description: |
   Der Gold- und Silberrechner berechnet den theoretischen Materialwert
   von Gold- und Silbergegenständen anhand von Gewicht, Feinheit und
@@ -15,6 +15,16 @@ description: |
 
   Sammlerwert, Verarbeitungskosten und Händlerabschläge sind nicht
   Bestandteil der Berechnung.
+
+  ## Español · Calculadora de oro y plata
+
+  Calcula el valor del metal de joyas, monedas y lingotes en euros. Introduce
+  el peso en gramos y la pureza en milésimas, y usa la cotización por onza
+  troy o escribe tu propio precio. Se muestran el valor, el peso de metal
+  puro y las onzas troy.
+
+  La aplicación se abre en español en sistemas configurados en español.
+  También puedes iniciarla con `snap run gold-silber-rechner --lang es`.
 
 website: https://linuga.org/gsr/
 contact: mailto:gsr@linuga.org
@@ -53,6 +63,10 @@ parts:
       - ca-certificates
       - tzdata
 
+    prime:
+      - -downloads
+      - -downloads/**
+
     organize:
       gold-silver-value-calculator-german-v2.2.py: usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py
       gold-silber-icon.png: usr/share/gold-silber-rechner/gold-silber-icon.png
@@ -66,7 +80,7 @@ parts:
       cat > "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner" << 'EOF'
       #!/bin/sh
       exec python3 \
-        "$SNAP/usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py"
+        "$SNAP/usr/share/gold-silber-rechner/gold-silver-value-calculator-german-v2.2.py" "$@"
       EOF
       chmod +x "$CRAFT_PART_INSTALL/bin/start-gold-silber-rechner"
 

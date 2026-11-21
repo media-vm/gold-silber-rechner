@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=Gold- und Silberrechner
 Comment=Materialwert von Gold und Silber berechnen
+Name[es]=Calculadora de oro y plata
+Comment[es]=Calcula el valor del oro y la plata
 Exec=gold-silber-rechner
 Icon=${SNAP}/meta/gui/icon.png
 Terminal=false

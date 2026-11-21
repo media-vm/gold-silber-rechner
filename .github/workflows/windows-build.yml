@@ -72,11 +72,21 @@ jobs:
               def get(self): return self.value
               def set(self, value): self.value = value
           ns = app['berechnen'].__globals__
-          for name, value in dict(unzenpreis_eingabe='31,1034768', gewicht_eingabe='100', feinheit_variable='800', metall_variable='Silber', ergebnis_variable='', status_variable='').items():
+          for name, value in dict(unzenpreis_eingabe='31,1034768', gewicht_eingabe='100', feinheit_variable='800', ergebnis_variable='', status_variable='').items():
               ns[name] = Field(value)
+          class Metal:
+              def current(self): return 0
+          ns['metall_auswahl'] = Metal()
+          ns['waehrung_auswahl'] = Field('EUR — Euro')
+          ns['gewichtseinheit_auswahl'] = Field('Gramo (g)')
           app['berechnen']()
           assert ns['ergebnis_variable'].get().startswith('80,00 €')
-          print('PASS: calculation, German input and Europe/Berlin time zone')
+          ns['sprache'] = 'es'
+          assert app['eingabe_lesen']('1,234.56', 'Dato') == Decimal('1234.56')
+          app['berechnen']()
+          assert ns['ergebnis_variable'].get().startswith('80,00 EUR')
+          assert 'Peso de metal puro' in ns['ergebnis_variable'].get()
+          print('PASS: both languages, number formats and Europe/Berlin time zone')
           '@ | python -
       - name: Build executable
         run: python -m PyInstaller --clean --noconfirm Gold-Silber-Rechner.spec
@@ -84,23 +94,26 @@ jobs:
         shell: pwsh
         run: |
           $exe = (Resolve-Path 'dist/Gold-Silber-Rechner.exe').Path
-          $process = Start-Process -FilePath $exe -PassThru
-          try {
-            $ready = $false
-            for ($attempt = 0; $attempt -lt 30; $attempt++) {
-              Start-Sleep -Seconds 1
-              $process.Refresh()
-              if ($process.HasExited) { throw "Executable exited prematurely: $($process.ExitCode)" }
-              $window = Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe -and $_.MainWindowTitle -eq 'Gold- und Silberrechner' }
-              if ($window) { $ready = $true; break }
+          $titles = @{ de = 'Gold- und Silberrechner'; es = 'Calculadora de oro y plata' }
+          foreach ($language in @('de', 'es')) {
+            $process = Start-Process -FilePath $exe -ArgumentList @('--lang', $language) -PassThru
+            try {
+              $ready = $false
+              for ($attempt = 0; $attempt -lt 30; $attempt++) {
+                Start-Sleep -Seconds 1
+                $process.Refresh()
+                if ($process.HasExited) { throw "Executable exited prematurely: $($process.ExitCode)" }
+                $window = Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe -and $_.MainWindowTitle -eq $titles[$language] }
+                if ($window) { $ready = $true; break }
+              }
+              if (-not $ready) { throw "Expected application window was not found for $language" }
+              Write-Output "PASS: packaged application window for $language"
+            } finally {
+              Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
             }
-            if (-not $ready) { throw 'Expected application window was not found' }
-            if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.2') {
-              throw 'Incorrect embedded version metadata'
-            }
-            Write-Output 'PASS: packaged application window and version metadata'
-          } finally {
-            Get-Process -Name 'Gold-Silber-Rechner' -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force
+          }
+          if ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe).ProductVersion -ne '2.2') {
+            throw 'Incorrect embedded version metadata'
           }
       - name: Name executable and calculate checksum
         shell: pwsh

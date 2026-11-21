@@ -1,6 +1,6 @@
 # Gold- und Silberrechner
 
-**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es) · [Código e instrucciones](https://github.com/media-vm/gold-silber-rechner/tree/es)
+**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es) · [Código e instrucciones](README.es.md)
 
 Der **Gold- und Silberrechner** ist eine kostenlose Anwendung zur Berechnung des Materialwerts von Gold und Silber anhand aktueller Edelmetallkurse.
 
@@ -72,7 +72,7 @@ Die Android-APK wurde noch nicht auf Version 2.2 aktualisiert. Der Android-Quell
 
 ### Weitere Paketvarianten und Archiv
 
-Ein MSIX-Paket wurde im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Für ARM64 sind Build- und Veröffentlichungsworkflows vorhanden. Die historische Python-Datei für Version 2.0 und [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) bleiben als Archiv erhalten.
+Ein MSIX-Paket wurde im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Für ARM64 sind Build- und Veröffentlichungsworkflows vorhanden. Version 2.0 bleibt im [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) und in der Git-Historie als Archiv erhalten.
 
 ### Projekt-Webseite
 
@@ -121,13 +121,13 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 Die Desktop-Version wurde in **Python** entwickelt.
 
 Die grafische Benutzeroberfläche verwendet Tkinter.
-Die Datei `gold-silver-value-calculator-german-v2.2.py` enthält den aktuellen Quellcode der Desktop-Version 2.2.
+Die Datei `gold-silver-value-calculator-german-v2.2.py` ist der gemeinsame Entwicklungsstand für Deutsch und Spanisch. Beide Sprachen werden auf `main` gepflegt. Die veröffentlichten Pakete können einen älteren Stand enthalten.
 
 Start aus dem Repository mit installiertem Python und Tkinter:
 
 ```bash
 python -m pip install -r requirements.txt
-python gold-silver-value-calculator-german-v2.2.py
+python gold-silver-value-calculator-german-v2.2.py --lang de
 ```
 
 ## Code signing policy
@@ -152,6 +152,8 @@ Dieses Projekt steht unter der MIT License.
 
 Siehe die Datei `LICENSE` im Repository.
 
+Die aktuelle Entwicklungsfassung bietet auf Deutsch EUR, CHF und USD sowie Karatangaben und Sterlingsilber. Die zusätzlichen Währungen und Gewichtseinheiten für die spanische Oberfläche beschreibt die [spanische Anleitung](README.es.md).
+
 ## Paketbau
 
 DEB reproduzierbar aus dem aktuellen Quellstand bauen:
@@ -160,6 +162,6 @@ DEB reproduzierbar aus dem aktuellen Quellstand bauen:
 python3 packaging/build-deb.py
 ```
 
-Der Build auf `main` erzeugt die frühere Paketrevision 2.2-2. Für das zweisprachige DEB 2.2-3 denselben Bauaufruf im [Zweig `es`](https://github.com/media-vm/gold-silber-rechner/tree/es) ausführen. Das Paket liegt anschließend unter `dist/`.
+Der Build auf `main` erzeugt den Entwicklungsstand als DEB-Revision 2.2-4 unter `dist/`. Der veröffentlichte DEB-Download ist Revision 2.2-3.
 
 Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. `Publish Windows 2.2 executables` veröffentlicht beide geprüften Artefakte eines erfolgreichen Builds. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.

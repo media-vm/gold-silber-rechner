@@ -5,3 +5,7 @@ Vor der öffentlichen Bereitstellung neuer Windows-EXE-Downloads für den Gold- 
 Vor dem Austausch Signatur, Zertifikat-Fingerabdruck, Zeitstempel und SHA-256-Prüfsumme prüfen. Nach der Veröffentlichung die Datei erneut vom öffentlichen Link herunterladen, Signatur und Prüfsumme bestätigen und die dokumentierten Prüfsummen aktualisieren. Wenn der Schlüssel nicht verfügbar ist, die EXE für die Signierung vorbereiten und mit der Veröffentlichung warten.
 
 Private Schlüssel, PFX-Dateien und Passwörter bleiben im lokalen Signiervorgang. Wenn eine PFX entsperrt werden muss, das Passwort verdeckt im lokalen Signierdialog eingeben lassen. Es gehört nicht in den Chat, das Repository, Build-Artefakte oder Protokolle.
+
+# Gemeinsamer Desktop-Quellcode
+
+Deutsch und Spanisch verwenden dieselbe Anwendungsdatei `gold-silver-value-calculator-german-v2.2.py` auf `main`. Änderungen an der Berechnung, der Oberfläche und dem Paketbau dort pflegen. `README.md` und `README.es.md` beschreiben die beiden Sprachmodi. Der Zweig `es` bleibt als Kompatibilitätsverweis für bestehende Links und ist kein eigener Entwicklungszweig.
