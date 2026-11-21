@@ -10,8 +10,10 @@ onzas troy.
 ## Descargar
 
 La [versión 2.2 en español](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es)
-incluye un paquete DEB para Debian y Ubuntu, un ZIP con el código, las
-dependencias y las instrucciones, y el archivo Python por separado.
+incluye un [EXE portátil para Windows 10 y 11 de 64 bits](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2-es/calculadora-de-oro-y-plata-2.2-windows-x64.exe),
+un paquete DEB para Debian y Ubuntu, un ZIP con el código y las
+instrucciones, y el archivo Python por separado. El EXE abre la aplicación
+en español con un doble clic y se distribuye sin firma digital.
 
 ## Instalar desde Snap Store
 
