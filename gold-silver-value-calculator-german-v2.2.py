@@ -791,6 +791,41 @@ def startbenachrichtigung_beenden():
             x11.XCloseDisplay(xdisplay)
 
 
+def windows_fenstersymbol_setzen(fenster, datei):
+    """Lädt die Windows-Titelleisten- und Taskleisten-Symbole aus der ICO-Datei."""
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.windll.user32
+    user32.GetAncestor.argtypes = (wintypes.HWND, wintypes.UINT)
+    user32.GetAncestor.restype = wintypes.HWND
+    user32.LoadImageW.argtypes = (
+        wintypes.HINSTANCE, wintypes.LPCWSTR, wintypes.UINT,
+        ctypes.c_int, ctypes.c_int, wintypes.UINT,
+    )
+    user32.LoadImageW.restype = wintypes.HANDLE
+    user32.SendMessageW.argtypes = (
+        wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM,
+    )
+    user32.SendMessageW.restype = ctypes.c_ssize_t
+
+    fenster.update_idletasks()
+    # Tk meldet das innere Fenster. Windows zeigt das Symbol am äußeren HWND.
+    hwnd = user32.GetAncestor(fenster.winfo_id(), 2)  # GA_ROOT
+    symbole = []
+    for typ, breite, hoehe in ((0, 49, 50), (1, 11, 12)):
+        icon = user32.LoadImageW(
+            None, datei, 1,  # IMAGE_ICON
+            user32.GetSystemMetrics(breite), user32.GetSystemMetrics(hoehe),
+            0x10,  # LR_LOADFROMFILE
+        )
+        if hwnd and icon:
+            user32.SendMessageW(hwnd, 0x0080, typ, icon)  # WM_SETICON
+        if icon:
+            symbole.append(icon)
+    return symbole
+
+
 def main():
     global fenster, metall_auswahl, feinheit_variable
     global ergebnis_variable, status_variable, kursstand_variable
@@ -807,6 +842,7 @@ def main():
 
     png_icon = os.path.join(RESSOURCEN_ORDNER, "gold-silber-icon.png")
     ico_icon = os.path.join(RESSOURCEN_ORDNER, "gold-silber-icon.ico")
+    windows_symbole = []
     try:
         if sys.platform == "win32" and os.path.isfile(ico_icon):
             fenster.iconbitmap(ico_icon)
@@ -998,7 +1034,20 @@ def main():
     fenster.protocol("WM_DELETE_WINDOW", schliessen)
     fenster.after(50, kursantworten_verarbeiten)
     fenster.after_idle(startbenachrichtigung_beenden)
-    fenster.mainloop()
+    if sys.platform == "win32" and os.path.isfile(ico_icon):
+        windows_symbole = windows_fenstersymbol_setzen(fenster, ico_icon)
+    try:
+        fenster.mainloop()
+    finally:
+        if windows_symbole:
+            import ctypes
+            from ctypes import wintypes
+
+            destroy_icon = ctypes.windll.user32.DestroyIcon
+            destroy_icon.argtypes = (wintypes.HICON,)
+            destroy_icon.restype = wintypes.BOOL
+            for zeiger in windows_symbole:
+                destroy_icon(zeiger)
 
 
 if __name__ == "__main__":
