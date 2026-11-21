@@ -36,17 +36,17 @@ Die signierte EXE liegt zusätzlich unter `downloads/Gold-Silber-Rechner-2.2.exe
 
 Dieser Build verwendet denselben Anwendungscode mit Python 3.8.10, PyInstaller 5.13.2 und einem Zoneinfo-Backport. Berechnung, Zeitzonendaten und Start der EXE wurden auf einem aktuellen Windows-CI-Runner geprüft. Ein Funktionstest auf einem echten Windows-7-Rechner steht noch aus. Die älteren Laufzeitbibliotheken sind für diesen Kompatibilitätsbuild erforderlich.
 
-### Debian / Ubuntu – Version 2.2, Paketrevision 2.2-2
+### Debian / Ubuntu – Version 2.2, Paketrevision 2.2-3
 
-[DEB-Paket herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2-2_all.deb)
+[DEB-Paket herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2-3_all.deb)
 
 ```bash
-sudo apt install ./gold-silber-rechner_2.2-2_all.deb
+sudo apt install ./gold-silber-rechner_2.2-3_all.deb
 ```
 
-Das Paket liegt zusätzlich im Repository unter `downloads/`.
+Das Paket enthält Deutsch und Spanisch. Die Oberfläche folgt der Systemsprache. Mit `gold-silber-rechner --lang es` kannst du Spanisch direkt wählen. [Alternativer Download von Linuga](https://linuga.org/gsr/downloads/gold-silber-rechner_2.2-3_all.deb).
 
-SHA-256: `7caa067547404ada99050d9e51013c7f322f149675cdb60d7675f3ba5d88b1c1`
+SHA-256: `61415952deaa2e0babe65b86ca1c1a10593e8cc1a4728b5a777271e446e48835`
 
 ### Snap – Version 2.2 (amd64 und ARM64)
 
@@ -158,6 +158,6 @@ DEB reproduzierbar aus dem aktuellen Quellstand bauen:
 python3 packaging/build-deb.py
 ```
 
-Das Paket liegt anschließend unter `dist/`. Snap und DEB verwenden dieselbe Python-Datei der Version 2.2. Die DEB-Paketrevision 2.2-2 enthält zusätzlich zur deaktivierten Desktop-Startbenachrichtigung die Bereinigung geerbter X11-Startbenachrichtigungen im Python-Programm.
+Der Build auf `main` erzeugt die frühere Paketrevision 2.2-2. Für das zweisprachige DEB 2.2-3 denselben Bauaufruf im [Zweig `es`](https://github.com/media-vm/gold-silber-rechner/tree/es) ausführen. Das Paket liegt anschließend unter `dist/`.
 
 Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. `Publish Windows 2.2 executables` veröffentlicht beide geprüften Artefakte eines erfolgreichen Builds. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.
