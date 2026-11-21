@@ -1,6 +1,6 @@
 # Gold- und Silberrechner
 
-[Español — Calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/tree/es)
+**Español** · [Descargar la calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2-es) · [Código e instrucciones](https://github.com/media-vm/gold-silber-rechner/tree/es)
 
 Der **Gold- und Silberrechner** ist eine kostenlose Anwendung zur Berechnung des Materialwerts von Gold und Silber anhand aktueller Edelmetallkurse.
 
