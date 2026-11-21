@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import argparse
+import locale
 import tkinter as tk
 from tkinter import ttk, messagebox
 import os
@@ -66,6 +68,69 @@ FEINHEITEN = {
     ],
 }
 
+
+SPANISCH = {
+    "Gold- und Silberrechner": "Calculadora de oro y plata",
+    "Silber": "Plata",
+    "Gold": "Oro",
+    "Der Kurszeitstempel fehlt oder ist ungültig.": "Falta la fecha de la cotización o no es válida.",
+    "{name} muss eine endliche Zahl größer als 0 und höchstens 10¹⁵ sein.": "{name}: introduce un número mayor que 0 y menor o igual que 10¹⁵.",
+    "{name}: Bitte beispielsweise 1234,56 oder 1.234,56 eingeben.": "{name}: introduce un número como 1234,56, 1.234,56 o 1,234.56.",
+    "{name}: Bitte eine gültige Zahl eingeben.": "{name}: introduce un número válido.",
+    "Eingaben geändert. Bitte neu berechnen.": "Datos modificados. Vuelve a calcular.",
+    "Der Kursserver meldet einen Fehler oder liefert ungültige Daten.": "El servidor de cotizaciones devolvió un error o datos no válidos.",
+    "Erwartet werden EUR pro Feinunze (toz).": "Se esperaba un precio en EUR por onza troy (toz).",
+    "Die Metallpreise fehlen.": "Faltan los precios de los metales.",
+    "Goldpreis": "Precio del oro",
+    "Silberpreis": "Precio de la plata",
+    "Der Kurszeitstempel liegt in der Zukunft.": "La fecha de la cotización es posterior a la hora actual.",
+    "Kurs wird geladen …": "Cargando cotizaciones…",
+    "Kursstand: ": "Cotización del ",
+    "Kurse erfolgreich geladen.": "Cotizaciones actualizadas.",
+    "Kursabruf fehlgeschlagen. Vorhandene Kurse bleiben erhalten.": "No se pudieron actualizar las cotizaciones. Se conservan los precios disponibles.",
+    "Fehler beim Kursabruf": "Error al obtener las cotizaciones",
+    "Kurse nicht verfügbar. Preise können manuell eingegeben werden.\n\n": "No hay cotizaciones disponibles. Puedes introducir el precio manualmente.",
+    "Preis pro Feinunze": "Precio por onza troy",
+    "Gewicht": "Peso",
+    "Bitte eine gültige Feinheit auswählen.": "Selecciona una pureza válida.",
+    "Feingewicht: ": "Peso de metal puro: ",
+    "Feinunzen: ": "Onzas troy de metal puro: ",
+    "Metallwert wurde berechnet.": "Valor del metal calculado.",
+    "Ungültige Eingabe.": "Dato no válido.",
+    "Ungültige Eingabe": "Dato no válido",
+    "Bereit.": "Listo.",
+    "Metall:": "Metal:",
+    "Preis pro Feinunze in €:": "Precio por onza troy (€):",
+    "Gewicht des Gegenstands in g:": "Peso del objeto (g):",
+    "Feinheit:": "Pureza (‰):",
+    "Berechnen": "Calcular",
+    "Zurücksetzen": "Restablecer",
+    "Beenden": "Salir",
+    "Fenster immer im Vordergrund halten": "Mantener la ventana encima de las demás",
+    "Ergebnis": "Resultado",
+    "Berechnet wird der theoretische Materialwert.\nSammlerwert, Verarbeitung und Händlerabschläge sind nicht enthalten.": "Se calcula el valor teórico del metal.\nNo incluye el valor de colección, la mano de obra\nni los márgenes comerciales.",
+    "Version {version}\nKursdaten: Metals.Dev": "Versión {version}\nCotizaciones: Metals.Dev",
+}
+sprache = "de"
+
+
+def _(text):
+    if sprache == "es":
+        return SPANISCH[text]
+    return text
+
+
+def systemsprache():
+    for variable in ("LC_ALL", "LC_MESSAGES", "LANG"):
+        wert = os.environ.get(variable)
+        if wert:
+            break
+    else:
+        wert = locale.getlocale()[0] or ""
+    sprachcode = re.split(r"[_\-.]", wert.lower(), maxsplit=1)[0]
+    return "es" if sprachcode in ("es", "spanish") else "de"
+
+
 gold_preis = None
 silber_preis = None
 kursabruf_laeuft = False
@@ -75,7 +140,7 @@ geschlossen = False
 
 def zeitstempel_lesen(zeit):
     if not isinstance(zeit, str) or not zeit.strip():
-        raise ValueError("Der Kurszeitstempel fehlt oder ist ungültig.")
+        raise ValueError(_("Der Kurszeitstempel fehlt oder ist ungültig."))
 
     datum = datetime.fromisoformat(zeit.strip().replace("Z", "+00:00"))
     if datum.tzinfo is None:
@@ -85,6 +150,8 @@ def zeitstempel_lesen(zeit):
 
 def kursstand_formatieren(zeit):
     datum = zeitstempel_lesen(zeit)
+    if sprache == "es":
+        return datum.astimezone(timezone.utc).strftime("%d/%m/%Y, %H:%M UTC")
     try:
         return datum.astimezone(
             ZoneInfo("Europe/Berlin")
@@ -120,8 +187,7 @@ def positive_zahl(wert, name):
         return zahl
     except (InvalidOperation, ValueError, TypeError):
         raise ValueError(
-            f"{name} muss eine endliche Zahl größer als 0 "
-            "und höchstens 10¹⁵ sein."
+            _("{name} muss eine endliche Zahl größer als 0 und höchstens 10¹⁵ sein.").format(name=name)
         ) from None
 
 
@@ -133,18 +199,19 @@ def eingabe_lesen(text, name):
     """
     text = text.strip()
 
+    if sprache == "es" and re.fullmatch(r"[0-9]{1,3}(?:,[0-9]{3})+\.[0-9]+", text):
+        text = text.replace(",", "")
     if "," in text:
         if not re.fullmatch(
             r"(?:[0-9]+|[0-9]{1,3}(?:\.[0-9]{3})+),[0-9]+",
             text,
         ):
             raise ValueError(
-                f"{name}: Bitte beispielsweise "
-                "1234,56 oder 1.234,56 eingeben."
+                _("{name}: Bitte beispielsweise 1234,56 oder 1.234,56 eingeben.").format(name=name)
             )
         text = text.replace(".", "").replace(",", ".")
     elif not re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", text):
-        raise ValueError(f"{name}: Bitte eine gültige Zahl eingeben.")
+        raise ValueError(_("{name}: Bitte eine gültige Zahl eingeben.").format(name=name))
 
     return positive_zahl(text, name)
 
@@ -152,13 +219,13 @@ def eingabe_lesen(text, name):
 def ergebnis_verwerfen(event=None):
     if ergebnis_variable.get():
         ergebnis_variable.set("")
-        status_variable.set("Eingaben geändert. Bitte neu berechnen.")
+        status_variable.set(_("Eingaben geändert. Bitte neu berechnen."))
 
 
 def preisfeld_aktualisieren():
     preis = (
         silber_preis
-        if metall_variable.get() == "Silber"
+        if metall_auswahl.current() == 0
         else gold_preis
     )
 
@@ -173,8 +240,12 @@ def preisfeld_aktualisieren():
     )
 
 
+def ausgewaehltes_metall():
+    return ("Silber", "Gold")[metall_auswahl.current()]
+
+
 def feinheiten_aktualisieren(event=None):
-    metall = metall_variable.get()
+    metall = ausgewaehltes_metall()
     feinheit_auswahl["values"] = FEINHEITEN[metall]
     feinheit_variable.set(FEINHEITEN[metall][0])
     ergebnis_variable.set("")
@@ -193,24 +264,23 @@ def kursdaten_laden():
 
     if not isinstance(daten, dict) or daten.get("status") != "success":
         raise ValueError(
-            "Der Kursserver meldet einen Fehler "
-            "oder liefert ungültige Daten."
+            _("Der Kursserver meldet einen Fehler oder liefert ungültige Daten.")
         )
 
     if daten.get("currency") != "EUR" or daten.get("unit") != "toz":
-        raise ValueError("Erwartet werden EUR pro Feinunze (toz).")
+        raise ValueError(_("Erwartet werden EUR pro Feinunze (toz)."))
 
     metals = daten.get("metals")
     if not isinstance(metals, dict):
-        raise ValueError("Die Metallpreise fehlen.")
+        raise ValueError(_("Die Metallpreise fehlen."))
 
-    gold = positive_zahl(metals.get("gold"), "Goldpreis")
-    silber = positive_zahl(metals.get("silver"), "Silberpreis")
+    gold = positive_zahl(metals.get("gold"), _("Goldpreis"))
+    silber = positive_zahl(metals.get("silver"), _("Silberpreis"))
     zeit = daten.get("updated_at")
     stand = zeitstempel_lesen(zeit)
 
     if stand > datetime.now(timezone.utc) + timedelta(minutes=5):
-        raise ValueError("Der Kurszeitstempel liegt in der Zukunft.")
+        raise ValueError(_("Der Kurszeitstempel liegt in der Zukunft."))
 
     return gold, silber, zeit
 
@@ -222,7 +292,7 @@ def kursdaten_abrufen():
         return
 
     kursabruf_laeuft = True
-    status_variable.set("Kurs wird geladen …")
+    status_variable.set(_("Kurs wird geladen …"))
 
     def abrufen():
         try:
@@ -257,22 +327,21 @@ def kursantworten_verarbeiten():
             # Erst nach vollständiger Validierung gemeinsam übernehmen.
             gold_preis, silber_preis = gold, silber
             kursstand_variable.set(
-                "Kursstand: " + kursstand_formatieren(zeit)
+                _("Kursstand: ") + kursstand_formatieren(zeit)
             )
             preisfeld_aktualisieren()
 
-            status_variable.set("Kurse erfolgreich geladen.")
+            status_variable.set(_("Kurse erfolgreich geladen."))
             
         else:
             status_variable.set(
-                "Kursabruf fehlgeschlagen. "
-                "Vorhandene Kurse bleiben erhalten."
+                _("Kursabruf fehlgeschlagen. Vorhandene Kurse bleiben erhalten.")
             )
             if gold_preis is None and silber_preis is None:
                 messagebox.showerror(
-                    "Fehler beim Kursabruf",
-                    "Kurse nicht verfügbar. Preise können manuell "
-                    "eingegeben werden.\n\n" + antwort,
+                    _("Fehler beim Kursabruf"),
+                    _("Kurse nicht verfügbar. Preise können manuell eingegeben werden.\n\n")
+                    + (antwort if sprache == "de" else ""),
                 )
 
     fenster.after(50, kursantworten_verarbeiten)
@@ -294,13 +363,13 @@ def berechnen():
 
     try:
         preis = eingabe_lesen(
-            unzenpreis_eingabe.get(), "Preis pro Feinunze"
+            unzenpreis_eingabe.get(), _("Preis pro Feinunze")
         )
-        gewicht = eingabe_lesen(gewicht_eingabe.get(), "Gewicht")
+        gewicht = eingabe_lesen(gewicht_eingabe.get(), _("Gewicht"))
         feinheit_text = feinheit_variable.get()
 
-        if feinheit_text not in FEINHEITEN[metall_variable.get()]:
-            raise ValueError("Bitte eine gültige Feinheit auswählen.")
+        if feinheit_text not in FEINHEITEN[ausgewaehltes_metall()]:
+            raise ValueError(_("Bitte eine gültige Feinheit auswählen."))
 
         with localcontext() as kontext:
             kontext.prec = 40
@@ -310,23 +379,23 @@ def berechnen():
 
             ergebnis_variable.set(
                 f"{zahl_deutsch_formatieren(metallwert, 2)} €\n\n"
-                f"Feingewicht: "
+                f"{_('Feingewicht: ')}"
                 f"{zahl_deutsch_formatieren(feingewicht, 2)} g\n"
-                f"Feinunzen: {zahl_deutsch_formatieren(feinunzen, 4)}"
+                f"{_('Feinunzen: ')}{zahl_deutsch_formatieren(feinunzen, 4)}"
             )
 
-        status_variable.set("Metallwert wurde berechnet.")
+        status_variable.set(_("Metallwert wurde berechnet."))
     except (ValueError, InvalidOperation) as fehler:
-        status_variable.set("Ungültige Eingabe.")
-        messagebox.showerror("Ungültige Eingabe", str(fehler))
+        status_variable.set(_("Ungültige Eingabe."))
+        messagebox.showerror(_("Ungültige Eingabe"), str(fehler))
 
 
 def eingaben_loeschen():
     gewicht_eingabe.delete(0, tk.END)
-    metall_variable.set("Silber")
+    metall_auswahl.current(0)
     feinheiten_aktualisieren()
     ergebnis_variable.set("")
-    status_variable.set("Bereit.")
+    status_variable.set(_("Bereit."))
     gewicht_eingabe.focus()
 
 
@@ -398,13 +467,13 @@ def startbenachrichtigung_beenden():
 
 
 def main():
-    global fenster, metall_variable, feinheit_variable
+    global fenster, metall_auswahl, feinheit_variable
     global ergebnis_variable, status_variable, kursstand_variable
     global unzenpreis_eingabe, gewicht_eingabe, feinheit_auswahl
     global immer_vorne_variable
 
     fenster = tk.Tk()
-    fenster.title("Gold- und Silberrechner")
+    fenster.title(_("Gold- und Silberrechner"))
     fenster.geometry("600x735")
     fenster.resizable(True, True)
     fenster.attributes("-topmost", True)
@@ -422,7 +491,7 @@ def main():
 
     ttk.Label(
         hauptbereich,
-        text="Gold- und Silberrechner",
+        text=_("Gold- und Silberrechner"),
         font=("Arial", 19, "bold"),
     ).pack(pady=(0, 20))
 
@@ -430,17 +499,16 @@ def main():
     formular.pack(fill="x", padx=20)
     formular.columnconfigure(1, weight=1)
 
-    ttk.Label(formular, text="Metall:").grid(
+    ttk.Label(formular, text=_("Metall:")).grid(
         row=0, column=0, sticky="w", padx=5, pady=9
     )
-    metall_variable = tk.StringVar(value="Silber")
     metall_auswahl = ttk.Combobox(
         formular,
-        textvariable=metall_variable,
-        values=["Silber", "Gold"],
+        values=[_("Silber"), _("Gold")],
         state="readonly",
         width=25,
     )
+    metall_auswahl.current(0)
     metall_auswahl.grid(
         row=0, column=1, sticky="ew", padx=5, pady=9
     )
@@ -448,7 +516,7 @@ def main():
         "<<ComboboxSelected>>", feinheiten_aktualisieren
     )
 
-    ttk.Label(formular, text="Preis pro Feinunze in €:").grid(
+    ttk.Label(formular, text=_("Preis pro Feinunze in €:")).grid(
         row=1, column=0, sticky="w", padx=5, pady=9
     )
     unzenpreis_variable = tk.StringVar()
@@ -469,7 +537,7 @@ def main():
         sticky="ew", padx=5, pady=(0, 5),
     )
 
-    ttk.Label(formular, text="Gewicht des Gegenstands in g:").grid(
+    ttk.Label(formular, text=_("Gewicht des Gegenstands in g:")).grid(
         row=3, column=0, sticky="w", padx=5, pady=9
     )
     gewicht_variable = tk.StringVar()
@@ -480,7 +548,7 @@ def main():
         row=3, column=1, sticky="ew", padx=5, pady=9
     )
 
-    ttk.Label(formular, text="Feinheit:").grid(
+    ttk.Label(formular, text=_("Feinheit:")).grid(
         row=4, column=0, sticky="w", padx=5, pady=9
     )
     feinheit_variable = tk.StringVar()
@@ -499,27 +567,27 @@ def main():
     button_bereich.pack(pady=(20, 10))
 
     ttk.Button(
-        button_bereich, text="Berechnen", command=berechnen
+        button_bereich, text=_("Berechnen"), command=berechnen
     ).grid(row=0, column=0, padx=8)
     ttk.Button(
         button_bereich,
-        text="Zurücksetzen",
+        text=_("Zurücksetzen"),
         command=eingaben_loeschen,
     ).grid(row=0, column=1, padx=8)
     ttk.Button(
-        button_bereich, text="Beenden", command=schliessen
+        button_bereich, text=_("Beenden"), command=schliessen
     ).grid(row=0, column=2, padx=8)
 
     immer_vorne_variable = tk.BooleanVar(value=True)
     ttk.Checkbutton(
         hauptbereich,
-        text="Fenster immer im Vordergrund halten",
+        text=_("Fenster immer im Vordergrund halten"),
         variable=immer_vorne_variable,
         command=vordergrund_umschalten,
     ).pack(pady=10)
 
     ergebnis_rahmen = ttk.LabelFrame(
-        hauptbereich, text="Ergebnis", padding=15
+        hauptbereich, text=_("Ergebnis"), padding=15
     )
     ergebnis_rahmen.pack(fill="x", padx=20, pady=10)
     ttk.Label(
@@ -532,20 +600,18 @@ def main():
     ttk.Label(
         hauptbereich,
         text=(
-            "Berechnet wird der theoretische Materialwert.\n"
-            "Sammlerwert, Verarbeitung und Händlerabschläge "
-            "sind nicht enthalten."
+            _("Berechnet wird der theoretische Materialwert.\nSammlerwert, Verarbeitung und Händlerabschläge sind nicht enthalten.")
         ),
         justify="center",
     ).pack(pady=8)
 
     ttk.Label(
         hauptbereich,
-        text=f"Version {__version__}\nKursdaten: Metals.Dev",
+        text=_("Version {version}\nKursdaten: Metals.Dev").format(version=__version__),
         justify="center",
     ).pack(pady=(4, 8))
 
-    status_variable = tk.StringVar(value="Bereit.")
+    status_variable = tk.StringVar(value=_("Bereit."))
     ttk.Label(
         hauptbereich,
         textvariable=status_variable,
@@ -574,4 +640,7 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--lang", choices=("de", "es"), help="Deutsch / Español")
+    sprache = parser.parse_args().lang or systemsprache()
     main()

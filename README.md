@@ -1,163 +1,55 @@
-# Gold- und Silberrechner
+# Calculadora de oro y plata
 
-[Español — Calculadora de oro y plata](https://github.com/media-vm/gold-silber-rechner/tree/es)
+[Deutsch — Gold- und Silberrechner](https://github.com/media-vm/gold-silber-rechner/tree/main)
 
-Der **Gold- und Silberrechner** ist eine kostenlose Anwendung zur Berechnung des Materialwerts von Gold und Silber anhand aktueller Edelmetallkurse.
+Calcula el valor del metal de una joya, moneda o lingote según su peso en
+gramos, su pureza en milésimas y el precio por onza troy. La aplicación
+muestra el resultado en euros, el peso de metal puro y su equivalente en
+onzas troy.
 
-Die Anwendung eignet sich zum Beispiel zur Bewertung von Münzen, Barren, Schmuck und anderen Gegenständen aus Gold oder Silber.
+## Descargar y ejecutar
 
-## Version
+Esta edición en español está disponible como código fuente de la rama
+`es`. Para ejecutarla necesitas Python 3, Tkinter y un entorno virtual.
+En Debian y Ubuntu, instala `python3-tk` y `python3-venv` si te faltan.
 
-Aktuelle Quellcode-Version: **2.2**
-
-Version 2.1 wird übersprungen. Version 2.0 bleibt als frühere Quellcode-Version erhalten.
-
-## Download
-
-Aktuelle Desktop-Pakete: [GitHub-Release v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2).
-
-### Windows 11 – Version 2.2 (64 Bit)
-
-[Gold-Silber-Rechner-2.2.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2.exe)
-
-Die Anwendung kann direkt gestartet werden; Python muss nicht separat installiert werden.
-
-Die Windows-11-Datei wurde vom Herausgeber selbstsigniert und mit einem DigiCert-Zeitstempel versehen. Das Zertifikat ist nicht automatisch auf anderen Rechnern vertrauenswürdig; SmartScreen-Warnungen können weiterhin erscheinen. Die Windows-7-Datei ist unverändert.
-
-SHA-256 Windows 11: `1b82765ede4c1d3addca9e2700e935ab264bebe1df4fe65210a5aaa0bfba4b2f`
-
-Zertifikat-Fingerabdruck (SHA-1): `5F2BD8D34D846C0197AC5A58343B6FDD407DE639`
-
-Die signierte EXE liegt zusätzlich unter `downloads/Gold-Silber-Rechner-2.2.exe`. Neue reguläre Builds werden noch nicht automatisch signiert. Der reguläre Veröffentlichungsworkflow überschreibt bestehende Release-Dateien daher nicht automatisch.
-
-### Windows 7 – Version 2.2 (32 Bit, Kompatibilitätsbuild)
-
-[Gold-Silber-Rechner-2.2-Windows7.exe herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/Gold-Silber-Rechner-2.2-Windows7.exe)
-
-Dieser Build verwendet denselben Anwendungscode mit Python 3.8.10, PyInstaller 5.13.2 und einem Zoneinfo-Backport. Berechnung, Zeitzonendaten und Start der EXE wurden auf einem aktuellen Windows-CI-Runner geprüft. Ein Funktionstest auf einem echten Windows-7-Rechner steht noch aus. Die älteren Laufzeitbibliotheken sind für diesen Kompatibilitätsbuild erforderlich.
-
-### Debian / Ubuntu – Version 2.2, Paketrevision 2.2-2
-
-[DEB-Paket herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2-2_all.deb)
-
-```bash
-sudo apt install ./gold-silber-rechner_2.2-2_all.deb
-```
-
-Das Paket liegt zusätzlich im Repository unter `downloads/`.
-
-SHA-256: `7caa067547404ada99050d9e51013c7f322f149675cdb60d7675f3ba5d88b1c1`
-
-### Snap – Version 2.2 (amd64 und ARM64)
-
-Im Snap Store im Kanal `latest/stable` verfügbar: amd64 ab Revision 6, ARM64 ab Revision 7. Bestehende Installation aktualisieren:
-
-```bash
-sudo snap refresh gold-silber-rechner
-```
-
-[amd64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_amd64.snap)
-
-[ARM64-Snap für lokale Installation herunterladen](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.2/gold-silber-rechner_2.2_arm64.snap)
-
-Der ARM64-Snap enthält denselben Python-Quellstand. Paketinhalt, Quellcode-Prüfsumme und GUI-Start mit Beispielrechnung wurden auf einem nativen ARM64-Runner geprüft. Die öffentliche Store-Abfrage bestätigt Version 2.2, Revision 7 für ARM64.
-
-### Android – weiterhin Version 2.0
-
-Die Android-APK wurde noch nicht auf Version 2.2 aktualisiert. Der Android-Quellcode und ein Android-Build sind in diesem Repository nicht enthalten.
-
-[Bisherige Android-APK aus Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.0/gold-silver-calculator-v2.apk)
-
-### Weitere Paketvarianten und Archiv
-
-Ein MSIX-Paket wurde im Rahmen dieser Aktualisierung nicht für Version 2.2 erstellt oder veröffentlicht. Für ARM64 sind Build- und Veröffentlichungsworkflows vorhanden. Die historische Python-Datei für Version 2.0 und [Release v2.0](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.0) bleiben als Archiv erhalten.
-
-### Projekt-Webseite
-
-Weitere Informationen und Downloads:
-
-https://linuga.org/gsr/
-
-## Funktionen
-
-- Berechnung des Materialwerts von Gold und Silber
-- Eingabe des Gewichts
-- Auswahl bzw. Eingabe der Feinheit
-- Berechnung des enthaltenen Feingewichts
-- Verwendung aktueller Gold- und Silberkurse
-- übersichtliche grafische Oberfläche
-- Unterstützung verschiedener Betriebssysteme
-
-## Unterstützte Plattformen
-
-Der Gold- und Silberrechner ist für mehrere Plattformen verfügbar:
-
-- Windows
-- Linux
-- Android
-
-Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, darunter:
-
-- Windows EXE
-- Windows MSIX
-- Debian DEB
-- Snap
-- Android APK
-
-## Screenshots
-
-### Linux
-
-![Gold- und Silberrechner unter Linux](images/screenshot-linux.png)
-
-### Windows
-
-![Gold- und Silberrechner unter Windows](images/screenshot-windows.png)
-
-## Quellcode
-
-Die Desktop-Version wurde in **Python** entwickelt.
-
-Die grafische Benutzeroberfläche verwendet Tkinter.
-Die Datei `gold-silver-value-calculator-german-v2.2.py` enthält den aktuellen Quellcode der Desktop-Version 2.2.
-
-Start aus dem Repository mit installiertem Python und Tkinter:
-
-```bash
+```sh
+git clone --branch es --single-branch https://github.com/media-vm/gold-silber-rechner.git
+cd gold-silber-rechner
+python3 -m venv .venv
+. .venv/bin/activate
 python -m pip install -r requirements.txt
-python gold-silver-value-calculator-german-v2.2.py
+python gold-silver-value-calculator-german-v2.2.py --lang es
 ```
 
-## Code signing policy
+En Windows, puedes crear el entorno con `py -m venv .venv` y usar
+`./.venv/Scripts/python.exe` en lugar de `python` en los dos últimos
+comandos. Si prefieres descargar el código sin Git, usa
+[el ZIP de la rama es](https://github.com/media-vm/gold-silber-rechner/archive/refs/heads/es.zip).
 
-Free code signing provided by SignPath.io, certificate by SignPath Foundation.
+El programa usa el idioma del sistema para elegir entre español y alemán.
+Puedes elegir el idioma de forma explícita con `--lang es` o `--lang de`.
 
-### Project roles
+## Calcular el valor de una pieza
 
-- Author / Committer: Volker Andreas Müller
-- Reviewer: Volker Andreas Müller
-- Approver: Volker Andreas Müller
+1. Elige **Oro** o **Plata**.
+2. Introduce el peso total en gramos y selecciona la pureza en milésimas (‰).
+   Por ejemplo, 100 g de plata de ley de 925 milésimas contienen 92,5 g de plata pura.
+3. Usa la cotización en euros por onza troy o introduce tu propio precio en EUR.
+4. Pulsa **Calcular**.
 
-### Privacy policy
+Se admiten números como `1234,56`, `1234.56`, `1.234,56` y `1,234.56`.
+Si el número tiene un solo separador, se interpreta como decimal. Escribe
+los enteros sin separador de miles, por ejemplo `1234`. La hora de la
+cotización se muestra en UTC. El cálculo estima el valor del metal.
+El valor de colección, la mano de obra y los márgenes comerciales quedan
+fuera del cálculo.
 
-See [PRIVACY.md](PRIVACY.md).
+## Paquetes y licencia
 
-The application connects to `https://gsr.linuga.org/` to retrieve current gold and silver prices. It does not contain advertising, analytics or user tracking.
+Los [paquetes publicados en v2.2](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.2)
+son los de la edición anterior en alemán. En Debian o Ubuntu puedes construir
+el paquete bilingüe `2.2-3` con `python3 packaging/build-deb.py`. Se genera
+en `dist/`.
 
-## Lizenz
-
-Dieses Projekt steht unter der MIT License.
-
-Siehe die Datei `LICENSE` im Repository.
-
-## Paketbau
-
-DEB reproduzierbar aus dem aktuellen Quellstand bauen:
-
-```bash
-python3 packaging/build-deb.py
-```
-
-Das Paket liegt anschließend unter `dist/`. Snap und DEB verwenden dieselbe Python-Datei der Version 2.2. Die DEB-Paketrevision 2.2-2 enthält zusätzlich zur deaktivierten Desktop-Startbenachrichtigung die Bereinigung geerbter X11-Startbenachrichtigungen im Python-Programm.
-
-Windows-Pakete werden über den GitHub-Actions-Workflow `Windows Build` aus derselben Python-Datei erstellt. `Publish Windows 2.2 executables` veröffentlicht beide geprüften Artefakte eines erfolgreichen Builds. Der Windows-7-Laufzeithook stellt den Import `zoneinfo` über den Backport bereit, ohne den Anwendungscode zu verändern.
+El proyecto de Volker Andreas Müller se distribuye bajo la [licencia MIT](LICENSE).
