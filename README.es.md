@@ -7,6 +7,10 @@ gramos, su pureza en milésimas y el precio por onza troy. La aplicación
 muestra el resultado en la moneda elegida, el peso de metal puro y su equivalente en
 onzas troy.
 
+## Captura de pantalla en Linux
+
+![Calculadora de oro y plata 2.3 en español con un cálculo en euros para plata de ley](images/screenshot-linux-es.png)
+
 ## Descargar
 
 La [versión 2.3](https://github.com/media-vm/gold-silber-rechner/releases/tag/v2.3) ofrece los mismos archivos para español y alemán:

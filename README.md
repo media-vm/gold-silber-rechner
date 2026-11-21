@@ -89,15 +89,9 @@ Je nach Plattform stehen unterschiedliche Installationspakete zur Verfügung, da
 - Snap
 - Android APK
 
-## Screenshots
+## Screenshot unter Linux
 
-### Linux
-
-![Gold- und Silberrechner unter Linux](images/screenshot-linux.png)
-
-### Windows
-
-![Gold- und Silberrechner unter Windows](images/screenshot-windows.png)
+![Gold- und Silberrechner 2.3 auf Deutsch mit geöffnetem Währungsmenü und einer Beispielrechnung in Euro](images/screenshot-linux.png)
 
 ## Quellcode
 
