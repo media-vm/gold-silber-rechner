@@ -1,7 +1,7 @@
 name: gold-silber-rechner
 title: Gold- und Silberrechner
-version: '2.3'
-summary: Gold- und Silberrechner / Calculadora de oro y plata
+version: '2.4'
+summary: Gold and Silver Calculator · Gold- und Silberrechner · Oro y plata
 description: |
   Der Gold- und Silberrechner berechnet den theoretischen Materialwert
   von Gold- und Silbergegenständen anhand von Gewicht, Feinheit und
@@ -21,7 +21,7 @@ description: |
 
   ## Español · Calculadora de oro y plata
 
-  Calcula el valor del metal de joyas, monedas y lingotes en euros. Introduce
+  Calcula el valor del metal de joyas, monedas y lingotes en la moneda que elijas. Introduce
   el peso en gramos y la pureza en milésimas, y usa la cotización por onza
   troy o escribe tu propio precio. Se muestran el valor, el peso de metal
   puro y las onzas troy. Puedes elegir entre 19 monedas y varias unidades
@@ -29,6 +29,19 @@ description: |
 
   La aplicación se abre en español en sistemas configurados en español.
   También puedes iniciarla con `snap run gold-silber-rechner --lang es`.
+
+  ## English · Gold and Silver Calculator
+
+  Estimate the precious metal value of jewelry, coins and bullion. Choose a
+  weight unit and gold karat or silver fineness, then use the reference price
+  per troy ounce or enter your own price. The calculator shows the estimated
+  value, pure metal weight and troy ounces.
+
+  Choose grams, kilograms, pounds, ounces or troy ounces. Available currencies
+  include USD, EUR, GBP, INR, PKR, NGN, PHP, TZS, ZAR, KES and UGX.
+
+  The app opens in English on English-language systems. To select English
+  explicitly, run `snap run gold-silber-rechner --lang en`.
 
 website: https://linuga.org/gsr/
 contact: mailto:gsr@linuga.org

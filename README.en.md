@@ -18,6 +18,7 @@ calculator shows the estimated metal value, pure metal weight and troy ounces.
 - [Windows 10 and 11 (64-bit portable EXE)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows-x64.exe)
 - [Windows 7 (32-bit compatibility EXE)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/Gold-Silver-Calculator-2.4-Windows7-x86.exe)
 - [Debian and Ubuntu (DEB)](https://github.com/media-vm/gold-silber-rechner/releases/download/v2.4/gold-silber-rechner_2.4-1_all.deb)
+- [Snap Store (Linux, AMD64 and ARM64)](https://snapcraft.io/gold-silber-rechner)
 
 English, German and Spanish use the same downloads. The application uses your
 system language. To select English explicitly, launch the executable or
